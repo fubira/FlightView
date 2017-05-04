@@ -40,6 +40,7 @@ public class FlightView
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
         new WorldRenderLastEventListener();
+        new FlightViewRenderer(Minecraft.getMinecraft());
     }
 
     @Mod.EventHandler

@@ -77,7 +77,7 @@ public class WorldRenderLastEventListener
 
     public void updateElytraFlying(long timeFlying)
     {
-        if (!isViewChanged && timeFlying > 1000)
+        if (!isViewChanged && timeFlying > 800)
         {
             Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
             isViewChanged = true;
