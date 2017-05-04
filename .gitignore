@@ -1,0 +1,56 @@
+# Builds & binaries
+build/
+run/
+bin/
+target/
+lib/
+invtweaks_docs/_build
+launcher/
+.gradle/
+*.zip
+*.jar
+*.class
+
+# Tmp files
+*~
+*#
+._*
+
+# IDEs
+.classpath
+.project
+.settings
+.pydevproject
+.idea/
+*.iml
+
+# MCP Files
+docs/
+conf/
+eclipse/
+jars/
+logs/
+runtime/
+temp/
+reobf/
+CHANGELOG
+LICENSE.txt
+*.sh
+
+# Misc
+*.rej
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/

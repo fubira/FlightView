@@ -1,0 +1,17 @@
+[
+{
+    "modid": "flightview",
+    "name": "FlightView",
+    "description": "FlightView",
+    "mcversion": "$mcversion",
+    "version": "$version",
+    "url": "",
+    "updateUrl": "",
+    "authors": [
+        "fubira"
+    ],
+    "credits": "FlightView by fubira",
+    "screenshots": [],
+    "dependencies": []
+}
+]
