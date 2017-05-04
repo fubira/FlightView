@@ -87,6 +87,6 @@ public class FlightView
     public static void toggle()
     {
         is_active =is_active ? false : true;
-        message("FlightView " + ((is_active) ? "is Actived." : "is Inactived."));
+        message("FlightView " + ((is_active) ? "is Activeated." : "is Inactivated."));
     }
 }
