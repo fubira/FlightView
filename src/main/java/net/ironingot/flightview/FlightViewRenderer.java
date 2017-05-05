@@ -71,8 +71,8 @@ public class FlightViewRenderer
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         RenderHelper.enableGUIStandardItemLighting();
 
-        itemRenderer.renderItemAndEffectIntoGUI(player, stack, x + 16, y + 23);
-        itemRenderer.renderItemOverlays(mc.fontRendererObj, stack, x + 16, y + 23);
+        itemRenderer.renderItemAndEffectIntoGUI(player, stack, x, y + 32);
+        itemRenderer.renderItemOverlays(mc.fontRendererObj, stack, x, y + 32);
 
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();
@@ -82,7 +82,7 @@ public class FlightViewRenderer
         int life = stack.getMaxDamage() - stack.getItemDamage();
         String s = "" + life;
         int color = (life < 30) ? 0xff0000 : 0xffffff;
-        mc.fontRendererObj.drawStringWithShadow(s, x + 36, y + 28, color);
+        mc.fontRendererObj.drawStringWithShadow(s, x + 18, y + 35 + 4, color);
 
         Vec3d vec3d = player.getLookVec();
         double direction = Math.sqrt(vec3d.xCoord * vec3d.xCoord + vec3d.zCoord * vec3d.zCoord);
@@ -97,7 +97,16 @@ public class FlightViewRenderer
 
         double airSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz);
         s = String.format("AS: %4.2f(km/h)", airSpeed * 20.0D * 3.6D);
-        mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 15, 0xffffff);
+        mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 13, 0xffffff);
+
+        double yaw = player.rotationYaw;
+        while(yaw < 0D) yaw += 360D;
+        while(yaw > 360D) yaw -= 360D;
+        yaw -= 180;
+
+        double pitch = player.rotationPitch;
+        s = String.format("Y: %-3.1f P: %.1f", yaw, pitch);
+        mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 24, 0xffffff);
     }
 
 }
