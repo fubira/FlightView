@@ -26,8 +26,6 @@ public class WorldRenderLastEventListener
 {
     private static final Logger logger = FMLLog.getLogger();
     private boolean isLastFlying = false;
-    private long timeFlyingStart = 0;
-
     private int lastViewState = 0;
     private boolean isViewChanged = false;
 
@@ -48,7 +46,6 @@ public class WorldRenderLastEventListener
         if (!isLastFlying && player.isElytraFlying())
         {
             startElytraFlying();
-            timeFlyingStart = Minecraft.getSystemTime();
             isLastFlying = true;
         }
 
@@ -60,7 +57,7 @@ public class WorldRenderLastEventListener
 
         if (isLastFlying && player.isElytraFlying())
         {
-            updateElytraFlying(Minecraft.getSystemTime() - timeFlyingStart);
+            updateElytraFlying(player.getTicksElytraFlying());
         }
     }
 
@@ -75,9 +72,9 @@ public class WorldRenderLastEventListener
         Minecraft.getMinecraft().gameSettings.thirdPersonView = lastViewState;
     }
 
-    public void updateElytraFlying(long timeFlying)
+    public void updateElytraFlying(long ticks)
     {
-        if (!isViewChanged && timeFlying > 800)
+        if (!isViewChanged && ticks > 15)
         {
             Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
             isViewChanged = true;

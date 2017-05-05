@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.RenderHelper;
@@ -23,6 +24,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
@@ -50,9 +53,10 @@ public class FlightViewRenderer
         {
             EntityPlayerSP player = Minecraft.getMinecraft().player;
             ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+            GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 
             if (itemstack.getItem() == Items.ELYTRA)
-                renderElytra(0, 0, player, itemstack);
+                renderElytra(16, 16, player, itemstack);
         }
     }
 
@@ -67,13 +71,24 @@ public class FlightViewRenderer
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         RenderHelper.enableGUIStandardItemLighting();
 
-        itemRenderer.renderItemAndEffectIntoGUI(player, stack, x, y);
-        itemRenderer.renderItemOverlays(mc.fontRendererObj, stack, x, y);
+        itemRenderer.renderItemAndEffectIntoGUI(player, stack, x + 16, y + 10);
+        itemRenderer.renderItemOverlays(mc.fontRendererObj, stack, x + 16, y + 10);
 
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();
         GlStateManager.disableBlend();
         RenderHelper.disableStandardItemLighting();
+
+        int life = stack.getMaxDamage() - stack.getItemDamage();
+        String s = "" + life;
+        int color = (life < 30) ? 0xff0000 : 0xffffff;
+        mc.fontRendererObj.drawStringWithShadow(s, x + 36, y + 15, color);
+
+        Vec3d vec3d = player.getLookVec();
+        double direction = Math.sqrt(vec3d.xCoord * vec3d.xCoord + vec3d.zCoord * vec3d.zCoord);
+        double groundSpeed = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
+        s = String.format("GS: %4.2f(km/h)", groundSpeed * 36.0D);
+        mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 2, 0xffffff);
     }
 
 }
