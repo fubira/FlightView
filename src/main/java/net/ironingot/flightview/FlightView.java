@@ -34,7 +34,7 @@ public class FlightView
 {
     private static final Logger logger = FMLLog.getLogger();
     public static final KeyBinding keybinding = new KeyBinding("Toggle FlightView Mode", Keyboard.KEY_V, "FlightView");
-    private static boolean is_active = false;
+    private static int mode = 0;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -55,7 +55,20 @@ public class FlightView
     public void onKeyInput(InputEvent.KeyInputEvent event)
     {
         if (FlightView.isKeyDown())
+        {
             toggle();
+            switch(mode) {
+                case 0:
+                    message("FlightView is Deactivated.");
+                    break;
+                case 1:
+                    message("FlightView is Activeated. (without Automatic Camera Change)");
+                    break;
+                case 2:
+                    message("FlightView is Activeated. (with Automatic Camera Change)");
+                    break;
+            }
+        }
     }
 
     public static boolean isKeyDown()
@@ -82,12 +95,17 @@ public class FlightView
 
     public static boolean isActive()
     {
-        return is_active;
+        return mode > 0;
+    }
+
+    public static boolean isCameraChange()
+    {
+        return mode == 2;
     }
 
     public static void toggle()
     {
-        is_active =is_active ? false : true;
-        message("FlightView " + ((is_active) ? "is Activeated." : "is Deactivated."));
+        mode += 1;
+        mode %= 3;
     }
 }

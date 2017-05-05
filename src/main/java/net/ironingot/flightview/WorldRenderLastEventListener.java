@@ -69,14 +69,16 @@ public class WorldRenderLastEventListener
 
     public void endElytraFlying()
     {
-        Minecraft.getMinecraft().gameSettings.thirdPersonView = lastViewState;
+        if (FlightView.isCameraChange())
+            Minecraft.getMinecraft().gameSettings.thirdPersonView = lastViewState;
     }
 
     public void updateElytraFlying(long ticks)
     {
         if (!isViewChanged && ticks > 15)
         {
-            Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
+            if (FlightView.isCameraChange())
+                Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
             isViewChanged = true;
         }
     }
