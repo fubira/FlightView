@@ -92,11 +92,11 @@ public class FlightViewRenderer
         double dz = player.posZ - player.prevPosZ;
 
         double groundSpeed = Math.sqrt(dx * dx + dz * dz);
-        s = String.format("GS: %4.2f(km/h)", groundSpeed * 20.0D);
+        s = String.format("GS: %4.2f(km/h)", groundSpeed * 20.0D * 3.6D);
         mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 2, 0xffffff);
 
         double airSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        s = String.format("AS: %4.2f(km/h)", airSpeed * 20.0D);
+        s = String.format("AS: %4.2f(km/h)", airSpeed * 20.0D * 3.6D);
         mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 15, 0xffffff);
     }
 
