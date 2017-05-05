@@ -71,8 +71,8 @@ public class FlightViewRenderer
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         RenderHelper.enableGUIStandardItemLighting();
 
-        itemRenderer.renderItemAndEffectIntoGUI(player, stack, x + 16, y + 10);
-        itemRenderer.renderItemOverlays(mc.fontRendererObj, stack, x + 16, y + 10);
+        itemRenderer.renderItemAndEffectIntoGUI(player, stack, x + 16, y + 23);
+        itemRenderer.renderItemOverlays(mc.fontRendererObj, stack, x + 16, y + 23);
 
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();
@@ -82,13 +82,22 @@ public class FlightViewRenderer
         int life = stack.getMaxDamage() - stack.getItemDamage();
         String s = "" + life;
         int color = (life < 30) ? 0xff0000 : 0xffffff;
-        mc.fontRendererObj.drawStringWithShadow(s, x + 36, y + 15, color);
+        mc.fontRendererObj.drawStringWithShadow(s, x + 36, y + 28, color);
 
         Vec3d vec3d = player.getLookVec();
         double direction = Math.sqrt(vec3d.xCoord * vec3d.xCoord + vec3d.zCoord * vec3d.zCoord);
-        double groundSpeed = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
-        s = String.format("GS: %4.2f(km/h)", groundSpeed * 36.0D);
+
+        double dx = player.posX - player.prevPosX;
+        double dy = player.posY - player.prevPosY;
+        double dz = player.posZ - player.prevPosZ;
+
+        double groundSpeed = Math.sqrt(dx * dx + dz * dz);
+        s = String.format("GS: %4.2f(km/h)", groundSpeed * 20.0D);
         mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 2, 0xffffff);
+
+        double airSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        s = String.format("AS: %4.2f(km/h)", airSpeed * 20.0D);
+        mc.fontRendererObj.drawStringWithShadow(s, x + 0, y + 15, 0xffffff);
     }
 
 }
