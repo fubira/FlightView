@@ -5,14 +5,7 @@ import java.util.List;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -22,22 +15,17 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class FlightViewRenderer
 {
-    private static final Logger logger = FMLLog.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     public FlightViewRenderer(Minecraft mcIn)
     {
@@ -112,18 +100,18 @@ public class FlightViewRenderer
         int width = 0;
 
         for (int i = 0; i < flightInfoString.size(); i++) {
-            width = Math.max(mc.fontRendererObj.getStringWidth(flightInfoString.get(i)), width);
+            width = Math.max(mc.fontRenderer.getStringWidth(flightInfoString.get(i)), width);
         }
         height = flightInfoString.size() * lineHeight;
         height += lineHeight * 1.6;
 
         Gui.drawRect(x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
         for (int i = 0; i < flightInfoString.size(); i++) {
-            mc.fontRendererObj.drawStringWithShadow(flightInfoString.get(i), x, y + lineHeight * i, 0xffffff);
+            mc.fontRenderer.drawStringWithShadow(flightInfoString.get(i), x, y + lineHeight * i, 0xffffff);
         }
 
         if (stack.getItem() == Items.ELYTRA) {
-            mc.fontRendererObj.drawStringWithShadow(elytraInfoString, x + 20, y + flightInfoString.size() * lineHeight + lineHeight * 0.5f, 0xffffff);
+            mc.fontRenderer.drawStringWithShadow(elytraInfoString, x + 20, y + flightInfoString.size() * lineHeight + lineHeight * 0.5f, 0xffffff);
             drawElytraIcon(x, y + flightInfoString.size() * lineHeight, stack);
         }
 
@@ -142,7 +130,7 @@ public class FlightViewRenderer
         RenderHelper.enableGUIStandardItemLighting();
 
         itemRenderer.renderItemAndEffectIntoGUI(stack, x, y);
-        itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj, stack, x, y, null);
+        itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, stack, x, y, null);
 
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();

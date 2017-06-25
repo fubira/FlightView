@@ -1,27 +1,23 @@
 package net.ironingot.flightview;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid="flightview",
@@ -32,7 +28,7 @@ import org.apache.logging.log4j.Logger;
      version="@VERSION@")
 public class FlightView
 {
-    private static final Logger logger = FMLLog.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     public static final KeyBinding keybinding = new KeyBinding("Toggle FlightView Mode", Keyboard.KEY_V, "FlightView");
     private static int mode = 0;
 
