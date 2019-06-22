@@ -3,17 +3,18 @@ package net.ironingot.flightview;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -25,25 +26,25 @@ import org.apache.logging.log4j.Logger;
 
 public class FlightViewRenderer
 {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = FlightViewMod.logger;
 
-    public FlightViewRenderer(Minecraft mcIn)
+    public FlightViewRenderer()
     {
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(Minecraft.getInstance());
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event)
     {
-        if (!FlightView.isActive())
+        if (!FlightViewMod.isActive())
             return;
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
         {
-            EntityPlayerSP player = Minecraft.getMinecraft().player;
+            EntityPlayerSP player = Minecraft.getInstance().player;
             ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+            GuiScreen screen = Minecraft.getInstance().currentScreen;
 
             renderFlightInfo(8, 32, player, itemstack);
         }
@@ -72,7 +73,7 @@ public class FlightViewRenderer
 
     protected int getElytraLife(ItemStack stack)
     {
-        return stack.getMaxDamage() - stack.getItemDamage();
+        return stack.getMaxDamage() - stack.getDamage();
     }
 
     protected String getElytraInfoString(ItemStack stack)
@@ -83,7 +84,7 @@ public class FlightViewRenderer
     protected int getElytraInfoColor(ItemStack stack)
     {
         int color = 0xffffff;
-        float left = stack.getItemDamage() / stack.getMaxDamage();
+        float left = stack.getDamage() / stack.getMaxDamage();
         if (left > 0.95D) color = 0xff0000;
         else if (left > 0.9D) color = 0xff8000;
         return color;
@@ -91,7 +92,7 @@ public class FlightViewRenderer
 
     protected int renderFlightInfo(int x, int y, EntityPlayer player, ItemStack stack)
     {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         List<String> flightInfoString = getFlightInfoString(player);
         String elytraInfoString = getElytraInfoString(stack);
 
@@ -120,13 +121,13 @@ public class FlightViewRenderer
 
     protected void drawElytraIcon(int x, int y, ItemStack stack)
     {
-        Minecraft mc = Minecraft.getMinecraft();
-        RenderItem itemRenderer = mc.getRenderItem();
+        Minecraft mc = Minecraft.getInstance();
+        ItemRenderer itemRenderer = mc.getItemRenderer();
 
         GlStateManager.pushMatrix();
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         RenderHelper.enableGUIStandardItemLighting();
 
         itemRenderer.renderItemAndEffectIntoGUI(stack, x, y);

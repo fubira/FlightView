@@ -1,57 +1,61 @@
 package net.ironingot.flightview;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.glfw.GLFW;
 
-@Mod(modid="flightview",
-     name="FlightView",
-     dependencies = "required-after:forge@[13.19.1,)",
-     acceptableRemoteVersions = "*",
-     acceptedMinecraftVersions = "",
-     version="@VERSION@")
-public class FlightView
+
+@Mod(FlightViewMod.modId)
+public class FlightViewMod
 {
-    private static final Logger logger = LogManager.getLogger();
-    public static final KeyBinding keybinding = new KeyBinding("Toggle FlightView Mode", Keyboard.KEY_V, "FlightView");
+    public static final Logger logger = LogManager.getLogger();
+
+    public static final String modId ="flightview";
+    public static final String buildId ="2019-6";
+    public static String modVersion;
+
+    public static final KeyBinding KEYBINDING_MODE = new KeyBinding("keybinding.desc.toggle", GLFW.GLFW_KEY_H, "keybinding.category.flightview");
+
     private static int mode = 0;
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
+    public FlightViewMod() {
+        FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
-        new WorldRenderLastEventListener();
-        new FlightViewRenderer(Minecraft.getMinecraft());
+
+        modVersion = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
+        FlightViewMod.logger.info("*** HorseInfoReloaded " + modVersion + " initialized ***");
     }
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-        ClientRegistry.registerKeyBinding(keybinding);
+    @SubscribeEvent
+    public void onClientSetup(FMLClientSetupEvent event) {
+        new WorldRenderLastEventListener();
+        new FlightViewRenderer();
+
+        ClientRegistry.registerKeyBinding(KEYBINDING_MODE);
         logger.info("[FlightView] Initialized.");
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event)
-    {
-        if (FlightView.isKeyDown())
-        {
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (KEYBINDING_MODE.isPressed()) {
             toggle();
             switch(mode) {
                 case 0:
@@ -67,22 +71,9 @@ public class FlightView
         }
     }
 
-    public static boolean isKeyDown()
-    {
-        int keyCode = keybinding.getKeyCode();
-        if (keyCode > 0)
-        {
-            return Keyboard.isKeyDown(keyCode);
-        }
-        else
-        {
-            return Mouse.isButtonDown(100 + keyCode);
-        }
-    }
-
     public static void message(String s)
     {
-        Minecraft.getMinecraft().player.sendMessage(new TextComponentString("")
+        Minecraft.getInstance().player.sendMessage(new TextComponentString("")
             .appendSibling((new TextComponentString("[")).setStyle((new Style()).setColor(TextFormatting.GRAY)))
             .appendSibling((new TextComponentString("FlightView")).setStyle((new Style()).setColor(TextFormatting.GREEN)))
             .appendSibling((new TextComponentString("] ")).setStyle((new Style()).setColor(TextFormatting.GRAY)))

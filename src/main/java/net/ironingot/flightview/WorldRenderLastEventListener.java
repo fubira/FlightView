@@ -1,10 +1,10 @@
 package net.ironingot.flightview;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 
@@ -23,13 +23,13 @@ public class WorldRenderLastEventListener
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onWorldRenderLast(RenderWorldLastEvent event)
     {
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        EntityPlayerSP player = Minecraft.getInstance().player;
 
-        if (!FlightView.isActive())
+        if (!FlightViewMod.isActive())
             return;
 
         if (!isLastFlying && player.isElytraFlying())
@@ -52,22 +52,22 @@ public class WorldRenderLastEventListener
 
     public void startElytraFlying()
     {
-        lastViewState = Minecraft.getMinecraft().gameSettings.thirdPersonView;
+        lastViewState = Minecraft.getInstance().gameSettings.thirdPersonView;
         isViewChanged = false;
     }
 
     public void endElytraFlying()
     {
-        if (FlightView.isCameraChange())
-            Minecraft.getMinecraft().gameSettings.thirdPersonView = lastViewState;
+        if (FlightViewMod.isCameraChange())
+            Minecraft.getInstance().gameSettings.thirdPersonView = lastViewState;
     }
 
     public void updateElytraFlying(long ticks)
     {
         if (!isViewChanged && ticks > 15)
         {
-            if (FlightView.isCameraChange())
-                Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
+            if (FlightViewMod.isCameraChange())
+                Minecraft.getInstance().gameSettings.thirdPersonView = 1;
             isViewChanged = true;
         }
     }

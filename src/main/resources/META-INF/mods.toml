@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[25,)" 
+
+author="fubira"
+issueTrackerURL="https://github.com/fubira/FlightView/issues"
+
+[[mods]]
+modId="flightview"
+version="${file.jarVersion}"
+displayName="FlightView"
+displayURL="https://github.com/fubira/FlightView/"
+credits="fubira/KenmoMinecraftClub"
+author="fubira"
+
+description='''
+FlightView
+'''
+
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.13.2]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.skipsign]]
+    modId="forge"
+    mandatory=true
+    versionRange="[25,)"
+    ordering="NONE"
+    side="BOTH"
+
