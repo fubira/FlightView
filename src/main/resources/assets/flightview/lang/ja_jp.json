@@ -1,4 +1,4 @@
 {
-    "keybinding.category.flightview": "FlightView",
-    "keybinding.desc.toggle": "有効/無効切り替え"
+    "flightview.keybinding.category": "FlightView",
+    "flightview.keybinding.desc.toggle": "有効/無効切り替え"
 }

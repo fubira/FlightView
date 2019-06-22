@@ -31,7 +31,7 @@ public class FlightViewMod
     public static final String buildId ="2019-6";
     public static String modVersion;
 
-    public static final KeyBinding KEYBINDING_MODE = new KeyBinding("keybinding.desc.toggle", GLFW.GLFW_KEY_H, "keybinding.category.flightview");
+    public static final KeyBinding KEYBINDING_MODE = new KeyBinding("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category");
 
     private static int mode = 0;
 
@@ -40,7 +40,7 @@ public class FlightViewMod
         MinecraftForge.EVENT_BUS.register(this);
 
         modVersion = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
-        FlightViewMod.logger.info("*** HorseInfoReloaded " + modVersion + " initialized ***");
+        FlightViewMod.logger.info("*** FlightView " + modVersion + " initialized ***");
     }
 
     @SubscribeEvent
