@@ -28,20 +28,17 @@ public class FlightViewRenderer
 {
     private static final Logger logger = FlightViewMod.logger;
 
-    public FlightViewRenderer()
-    {
-        MinecraftForge.EVENT_BUS.register(Minecraft.getInstance());
+    public FlightViewRenderer() {
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onRenderGameOverlay(RenderGameOverlayEvent.Post event)
-    {
+    public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
         if (!FlightViewMod.isActive())
             return;
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
-        {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
             EntityPlayerSP player = Minecraft.getInstance().player;
             ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
             GuiScreen screen = Minecraft.getInstance().currentScreen;
@@ -50,8 +47,7 @@ public class FlightViewRenderer
         }
     }
 
-    protected List<String> getFlightInfoString(EntityPlayer player)
-    {
+    protected List<String> getFlightInfoString(EntityPlayer player) {
         List<String> stringArray = new ArrayList<String>();
         double dx = player.posX - player.prevPosX;
         double dy = player.posY - player.prevPosY;
@@ -71,18 +67,15 @@ public class FlightViewRenderer
         return stringArray;
     }
 
-    protected int getElytraLife(ItemStack stack)
-    {
+    protected int getElytraLife(ItemStack stack) {
         return stack.getMaxDamage() - stack.getDamage();
     }
 
-    protected String getElytraInfoString(ItemStack stack)
-    {
+    protected String getElytraInfoString(ItemStack stack) {
         return String.format("%3d", getElytraLife(stack));
     }
 
-    protected int getElytraInfoColor(ItemStack stack)
-    {
+    protected int getElytraInfoColor(ItemStack stack) {
         int color = 0xffffff;
         float left = stack.getDamage() / stack.getMaxDamage();
         if (left > 0.95D) color = 0xff0000;
@@ -90,8 +83,7 @@ public class FlightViewRenderer
         return color;
     }
 
-    protected int renderFlightInfo(int x, int y, EntityPlayer player, ItemStack stack)
-    {
+    protected int renderFlightInfo(int x, int y, EntityPlayer player, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         List<String> flightInfoString = getFlightInfoString(player);
         String elytraInfoString = getElytraInfoString(stack);
@@ -119,8 +111,7 @@ public class FlightViewRenderer
         return height;
     }
 
-    protected void drawElytraIcon(int x, int y, ItemStack stack)
-    {
+    protected void drawElytraIcon(int x, int y, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         ItemRenderer itemRenderer = mc.getItemRenderer();
 
