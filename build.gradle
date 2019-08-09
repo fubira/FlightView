@@ -12,8 +12,8 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle'
 
-def mc_version = "1.13.2"
-def forge_version = "25.0.193"
+def mc_version = "1.14.4"
+def forge_version = "28.0.45"
 def postfix_version = "a"
 
 version = "${mc_version}-${postfix_version}"
@@ -21,10 +21,12 @@ group = "net.ironingot.flightview"
 archivesBaseName = "FlightView"
 
 minecraft {
-    mappings channel: 'snapshot', version: '20180921-1.13'
+    mappings channel: 'snapshot', version: '20190719-1.14.3'
     runs {
         client {
             workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
             mods {
                 flightview {
                     source sourceSets.main
@@ -33,6 +35,19 @@ minecraft {
         }
         server {
             workingDirectory file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                flightview {
+                    source sourceSets.main
+                }
+            }
+        }
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
             mods {
                 flightview {
                     source sourceSets.main
