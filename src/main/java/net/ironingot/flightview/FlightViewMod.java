@@ -14,7 +14,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import org.apache.logging.log4j.LogManager;
@@ -73,11 +73,11 @@ public class FlightViewMod
 
     public static void message(String s)
     {
-        Minecraft.getInstance().player.sendMessage(new TextComponentString("")
-            .appendSibling((new TextComponentString("[")).setStyle((new Style()).setColor(TextFormatting.GRAY)))
-            .appendSibling((new TextComponentString("FlightView")).setStyle((new Style()).setColor(TextFormatting.GREEN)))
-            .appendSibling((new TextComponentString("] ")).setStyle((new Style()).setColor(TextFormatting.GRAY)))
-            .appendSibling((new TextComponentString(s))));
+        Minecraft.getInstance().player.sendMessage(new StringTextComponent("")
+            .appendSibling((new StringTextComponent("[")).setStyle((new Style()).setColor(TextFormatting.GRAY)))
+            .appendSibling((new StringTextComponent("FlightView")).setStyle((new Style()).setColor(TextFormatting.GREEN)))
+            .appendSibling((new StringTextComponent("] ")).setStyle((new Style()).setColor(TextFormatting.GRAY)))
+            .appendSibling((new StringTextComponent(s))));
     }
 
     public static boolean isActive()

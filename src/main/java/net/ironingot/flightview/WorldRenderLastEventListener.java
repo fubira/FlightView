@@ -6,7 +6,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ public class WorldRenderLastEventListener
     @SubscribeEvent
     public void onWorldRenderLast(RenderWorldLastEvent event)
     {
-        EntityPlayerSP player = Minecraft.getInstance().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
 
         if (!FlightViewMod.isActive())
             return;

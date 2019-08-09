@@ -10,16 +10,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
+
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,15 +39,14 @@ public class FlightViewRenderer
             return;
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
-            EntityPlayerSP player = Minecraft.getInstance().player;
-            ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            GuiScreen screen = Minecraft.getInstance().currentScreen;
+            ClientPlayerEntity player = Minecraft.getInstance().player;
+            ItemStack itemstack = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
 
             renderFlightInfo(8, 32, player, itemstack);
         }
     }
 
-    protected List<String> getFlightInfoString(EntityPlayer player) {
+    protected List<String> getFlightInfoString(PlayerEntity player) {
         List<String> stringArray = new ArrayList<String>();
         double dx = player.posX - player.prevPosX;
         double dy = player.posY - player.prevPosY;
@@ -83,7 +82,7 @@ public class FlightViewRenderer
         return color;
     }
 
-    protected int renderFlightInfo(int x, int y, EntityPlayer player, ItemStack stack) {
+    protected int renderFlightInfo(int x, int y, PlayerEntity player, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         List<String> flightInfoString = getFlightInfoString(player);
         String elytraInfoString = getElytraInfoString(stack);
@@ -98,7 +97,7 @@ public class FlightViewRenderer
         height = flightInfoString.size() * lineHeight;
         height += lineHeight * 1.6;
 
-        Gui.drawRect(x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
+        AbstractGui.fill(x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
         for (int i = 0; i < flightInfoString.size(); i++) {
             mc.fontRenderer.drawStringWithShadow(flightInfoString.get(i), x, y + lineHeight * i, 0xffffff);
         }
