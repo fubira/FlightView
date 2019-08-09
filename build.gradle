@@ -17,7 +17,7 @@ def postfix_version = "a"
 
 version = "${mc_version}-${postfix_version}"
 group = "net.ironingot.flightview"
-archivesBaseName = "flightview"
+archivesBaseName = "FlightView"
 
 sourceCompatibility =
 targetCompatibility =
