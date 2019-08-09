@@ -16,14 +16,14 @@ description='''
 FlightView
 '''
 
-[[dependencies.examplemod]]
+[[dependencies.flightview]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.13.2]"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.skipsign]]
+[[dependencies.flightview]]
     modId="forge"
     mandatory=true
     versionRange="[25,)"
