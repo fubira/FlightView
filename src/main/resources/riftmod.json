@@ -1,0 +1,13 @@
+{
+    "id": "flightview",
+    "name": "FlightView",
+    "authors": [
+        "fubira"
+    ],
+    "listeners": [
+        "net.ironingot.flightview.FlightViewMod",
+        "net.ironingot.flightview.FlightViewKeyBinding",
+        "net.ironingot.flightview.FlightViewRenderer",
+        "net.ironingot.flightview.WorldRenderLastEventListener"
+    ]
+}

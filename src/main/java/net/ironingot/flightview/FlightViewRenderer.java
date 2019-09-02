@@ -3,14 +3,7 @@ package net.ironingot.flightview;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,30 +14,24 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
+import org.dimdev.rift.listener.client.OverlayRenderer;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FlightViewRenderer
+public class FlightViewRenderer implements OverlayRenderer
 {
     private static final Logger logger = FlightViewMod.logger;
 
-    public FlightViewRenderer() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
+    @Override
+    public void renderOverlay() {
         if (!FlightViewMod.isActive())
             return;
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
-            EntityPlayerSP player = Minecraft.getInstance().player;
-            ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            GuiScreen screen = Minecraft.getInstance().currentScreen;
-
-            renderFlightInfo(8, 32, player, itemstack);
-        }
+        EntityPlayer player = Minecraft.getInstance().player;
+        ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+        GuiScreen screen = Minecraft.getInstance().currentScreen;
+        renderFlightInfo(8, 32, player, itemstack);
     }
 
     protected List<String> getFlightInfoString(EntityPlayer player) {

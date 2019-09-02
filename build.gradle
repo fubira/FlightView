@@ -1,51 +1,43 @@
 buildscript {
     repositories {
-        maven { url = "http://files.minecraftforge.net/maven" }
         mavenCentral()
-        jcenter()
+        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://www.dimdev.org/maven/' }
+		maven { url 'https://files.minecraftforge.net/maven' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'com.github.Chocohead:ForgeGradle:jitpack-SNAPSHOT'
     }
 }
 
+apply plugin: 'net.minecraftforge.gradle.tweaker-client'
 apply plugin: 'java'
-apply plugin: 'net.minecraftforge.gradle'
 
 def mc_version = "1.13.2"
-def forge_version = "25.0.193"
+def mappings_version = 'snapshot_20190529'
 def postfix_version = "a"
 
 version = "${mc_version}-${postfix_version}"
 group = "net.ironingot.flightview"
-archivesBaseName = "FlightView"
+archivesBaseName = "riftmod-FlightView"
 
 minecraft {
-    mappings channel: 'snapshot', version: '20180921-1.13'
-    runs {
-        client {
-            workingDirectory project.file('run')
-            mods {
-                flightview {
-                    source sourceSets.main
-                }
-            }
-        }
-        server {
-            workingDirectory file('run')
-            mods {
-                flightview {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
+    version = mc_version
+    mappings = mappings_version
+    runDir = 'minecraft'
+    makeObfSourceJar = false
+    tweakClass = 'org.dimdev.riftloader.launch.RiftLoaderClientTweaker'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://www.dimdev.org/maven/' }
+    maven { url 'https://www.jitpack.io' }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:' + mc_version + '-' + forge_version
+	implementation 'com.github.Chocohead:Rift:d4cd7b00ba:dev'
 }
-
 def defaultEncoding = 'UTF-8'
 tasks.withType(AbstractCompile).each { it.options.encoding = defaultEncoding }
 
