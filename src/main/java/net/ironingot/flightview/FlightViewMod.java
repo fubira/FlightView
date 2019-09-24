@@ -8,6 +8,7 @@ import net.minecraft.util.text.TextFormatting;
 
 import org.dimdev.riftloader.listener.InitializationListener;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
