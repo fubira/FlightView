@@ -15,7 +15,7 @@ apply plugin: 'java'
 
 def mc_version = "1.13.2"
 def mappings_version = 'snapshot_20190529'
-def postfix_version = "a"
+def postfix_version = "b"
 
 version = "${mc_version}-${postfix_version}"
 group = "net.ironingot.flightview"
