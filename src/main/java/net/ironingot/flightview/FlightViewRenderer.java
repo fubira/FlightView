@@ -20,6 +20,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,9 +49,9 @@ public class FlightViewRenderer
 
     protected List<String> getFlightInfoString(PlayerEntity player) {
         List<String> stringArray = new ArrayList<String>();
-        double dx = player.posX - player.prevPosX;
-        double dy = player.posY - player.prevPosY;
-        double dz = player.posZ - player.prevPosZ;
+        double dx = player.getPosX() - player.prevPosX;
+        double dy = player.getPosY() - player.prevPosY;
+        double dz = player.getPosZ() - player.prevPosZ;
         double groundSpeed = Math.sqrt(dx * dx + dz * dz);
         double airSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz);
         double yaw = player.rotationYaw;
@@ -114,18 +115,18 @@ public class FlightViewRenderer
         Minecraft mc = Minecraft.getInstance();
         ItemRenderer itemRenderer = mc.getItemRenderer();
 
-        GlStateManager.pushMatrix();
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        RenderHelper.enableGUIStandardItemLighting();
+        RenderSystem.pushMatrix();
+        RenderSystem.enableRescaleNormal();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        RenderHelper.enableStandardItemLighting();
 
         itemRenderer.renderItemAndEffectIntoGUI(stack, x, y);
         itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, stack, x, y, null);
 
-        GlStateManager.popMatrix();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.disableBlend();
+        RenderSystem.popMatrix();
+        RenderSystem.disableRescaleNormal();
+        RenderSystem.disableBlend();
         RenderHelper.disableStandardItemLighting();
     }
 }
