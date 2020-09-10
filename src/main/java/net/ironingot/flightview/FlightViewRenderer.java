@@ -20,6 +20,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import org.apache.logging.log4j.LogManager;
@@ -42,8 +43,7 @@ public class FlightViewRenderer
         if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
             ClientPlayerEntity player = Minecraft.getInstance().player;
             ItemStack itemstack = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
-
-            renderFlightInfo(8, 32, player, itemstack);
+            renderFlightInfo(new MatrixStack(), 8, 32, player, itemstack);
         }
     }
 
@@ -83,7 +83,7 @@ public class FlightViewRenderer
         return color;
     }
 
-    protected int renderFlightInfo(int x, int y, PlayerEntity player, ItemStack stack) {
+    protected int renderFlightInfo(MatrixStack matrixStack, int x, int y, PlayerEntity player, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         List<String> flightInfoString = getFlightInfoString(player);
         String elytraInfoString = getElytraInfoString(stack);
@@ -98,13 +98,15 @@ public class FlightViewRenderer
         height = flightInfoString.size() * lineHeight;
         height += lineHeight * 1.6;
 
-        AbstractGui.fill(x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
+        AbstractGui.func_238467_a_(matrixStack, x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
         for (int i = 0; i < flightInfoString.size(); i++) {
-            mc.fontRenderer.drawStringWithShadow(flightInfoString.get(i), x, y + lineHeight * i, 0xffffff);
+            // mc.fontRenderer.drawStringWithShadow
+            mc.fontRenderer.func_238406_a_(matrixStack, flightInfoString.get(i), x, y + lineHeight * i, 0xffffff, true);
         }
 
         if (stack.getItem() == Items.ELYTRA) {
-            mc.fontRenderer.drawStringWithShadow(elytraInfoString, x + 20, y + flightInfoString.size() * lineHeight + lineHeight * 0.5f, 0xffffff);
+            // mc.fontRenderer.drawStringWithShadow
+            mc.fontRenderer.func_238406_a_(matrixStack, elytraInfoString, x + 20, y + flightInfoString.size() * lineHeight + lineHeight * 0.5f, 0xffffff, true);
             drawElytraIcon(x, y + flightInfoString.size() * lineHeight, stack);
         }
 

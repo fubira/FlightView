@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.UUID;
 
 @Mod(FlightViewMod.modId)
 public class FlightViewMod
@@ -73,11 +74,12 @@ public class FlightViewMod
 
     public static void message(String s)
     {
-        Minecraft.getInstance().player.sendMessage(new StringTextComponent("")
-            .appendSibling((new StringTextComponent("[")).setStyle((new Style()).setColor(TextFormatting.GRAY)))
-            .appendSibling((new StringTextComponent("FlightView")).setStyle((new Style()).setColor(TextFormatting.GREEN)))
-            .appendSibling((new StringTextComponent("] ")).setStyle((new Style()).setColor(TextFormatting.GRAY)))
-            .appendSibling((new StringTextComponent(s))));
+        Minecraft mc = Minecraft.getInstance();
+        mc.player.sendMessage(new StringTextComponent("")
+            .func_230529_a_((new StringTextComponent("[")).func_240699_a_(TextFormatting.GRAY))
+            .func_230529_a_((new StringTextComponent("FlightView")).func_240699_a_(TextFormatting.GREEN))
+            .func_230529_a_((new StringTextComponent("] ")).func_240699_a_(TextFormatting.GRAY))
+            .func_230529_a_((new StringTextComponent(s))), UUID.randomUUID());
     }
 
     public static boolean isActive()

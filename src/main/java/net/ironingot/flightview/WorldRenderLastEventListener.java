@@ -7,6 +7,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.settings.PointOfView;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,7 @@ public class WorldRenderLastEventListener
 {
     private static final Logger logger = LogManager.getLogger();
     private boolean isLastFlying = false;
-    private int lastViewState = 0;
+    private PointOfView lastViewState = null;
     private boolean isViewChanged = false;
 
     public WorldRenderLastEventListener()
@@ -52,14 +53,14 @@ public class WorldRenderLastEventListener
 
     public void startElytraFlying()
     {
-        lastViewState = Minecraft.getInstance().gameSettings.thirdPersonView;
+        lastViewState = Minecraft.getInstance().gameSettings.func_243230_g();
         isViewChanged = false;
     }
 
     public void endElytraFlying()
     {
-        if (FlightViewMod.isCameraChange())
-            Minecraft.getInstance().gameSettings.thirdPersonView = lastViewState;
+        if (FlightViewMod.isCameraChange() && lastViewState != null)
+            Minecraft.getInstance().gameSettings.func_243229_a(lastViewState);
     }
 
     public void updateElytraFlying(long ticks)
@@ -67,7 +68,7 @@ public class WorldRenderLastEventListener
         if (!isViewChanged && ticks > 15)
         {
             if (FlightViewMod.isCameraChange())
-                Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                Minecraft.getInstance().gameSettings.func_243229_a(PointOfView.FIRST_PERSON);
             isViewChanged = true;
         }
     }
