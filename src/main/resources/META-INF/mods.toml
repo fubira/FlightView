@@ -1,7 +1,9 @@
 modLoader="javafml"
-loaderVersion="[31,)" 
+loaderVersion="[33,)" 
 
 author="fubira"
+license="Copyright (c) 2016-2020 fubira"
+
 issueTrackerURL="https://github.com/fubira/FlightView/issues"
 
 [[mods]]
@@ -19,14 +21,14 @@ FlightView
 [[dependencies.flightview]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15,)"
+    versionRange="[1.16,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.flightview]]
     modId="forge"
     mandatory=true
-    versionRange="[31,)"
+    versionRange="[33,)"
     ordering="NONE"
     side="BOTH"
 
