@@ -3,7 +3,8 @@ package net.ironingot.flightview;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -38,7 +39,7 @@ public class FlightViewMod
 
     public FlightViewMod() {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, KeyInputEvent.class, this::onKeyInput);
 
         modVersion = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
         FlightViewMod.logger.info("*** FlightView " + modVersion + " initialized ***");
@@ -54,8 +55,7 @@ public class FlightViewMod
     }
 
     @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
+    public void onKeyInput(KeyInputEvent event) {
         if (KEYBINDING_MODE.isPressed()) {
             toggle();
             switch(mode) {
