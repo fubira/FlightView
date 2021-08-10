@@ -76,7 +76,7 @@ public class WorldRenderLastEventListener
         if (!isCameraChanged && ticks > 15)
         {
             if (FlightViewMod.isCameraChange()) {
-                mc.options.setCameraType(CameraType.FIRST_PERSON);
+                mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);
             }
             isCameraChanged = true;
         }
