@@ -7,16 +7,14 @@ import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.network.chat.TextComponent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +31,7 @@ public class FlightViewMod
     public static final String buildId ="2019-6";
     public static String modVersion;
 
-    public static final KeyBinding KEYBINDING_MODE = new KeyBinding("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category");
+    public static final KeyMapping KEYBINDING_MODE = new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category");
 
     private static int mode = 0;
 
@@ -56,7 +54,7 @@ public class FlightViewMod
 
     @OnlyIn(Dist.CLIENT)
     public void onKeyInput(KeyInputEvent event) {
-        if (KEYBINDING_MODE.isPressed()) {
+        if (KEYBINDING_MODE.isDown()) {
             toggle();
             switch(mode) {
                 case 0:
@@ -75,11 +73,14 @@ public class FlightViewMod
     public static void message(String s)
     {
         Minecraft mc = Minecraft.getInstance();
-        mc.player.sendMessage(new StringTextComponent("")
-            .func_230529_a_((new StringTextComponent("[")).func_240699_a_(TextFormatting.GRAY))
-            .func_230529_a_((new StringTextComponent("FlightView")).func_240699_a_(TextFormatting.GREEN))
-            .func_230529_a_((new StringTextComponent("] ")).func_240699_a_(TextFormatting.GRAY))
-            .func_230529_a_((new StringTextComponent(s))), UUID.randomUUID());
+        mc.player.sendMessage(
+            new TextComponent("")
+                .append(new TextComponent("[").withStyle(ChatFormatting.GRAY))
+                .append(new TextComponent("FlightView").withStyle(ChatFormatting.GREEN))
+                .append(new TextComponent("] ").withStyle(ChatFormatting.GRAY))
+                .append(new TextComponent(s)),
+            UUID.randomUUID()
+        );
     }
 
     public static boolean isActive()
