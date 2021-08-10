@@ -14,7 +14,7 @@ apply plugin: 'net.minecraftforge.gradle'
 
 def mc_version = "1.17.1"
 def forge_version = "37.0.27"
-def postfix_version = "a"
+def postfix_version = "b"
 
 version = "${mc_version}-${postfix_version}"
 group = "net.ironingot.flightview"
