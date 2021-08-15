@@ -1,0 +1,51 @@
+plugins {
+    id("fabric-loom")
+}
+
+dependencies {
+    minecraft(libs.minecraft)
+    mappings(loom.officialMojangMappings())
+
+    modImplementation(libs.bundles.fabric)
+    modImplementation(libs.clothConfigFabric)
+
+    implementation(project(":common"))
+}
+
+tasks {
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        from("src/main/resources", "../common/src/main/resources")
+
+        filesMatching("fabric.mod.json") {
+            expand(project.properties)
+        }
+    }
+
+    compileJava {
+        options.encoding = "UTF-8"
+        options.release.set(16)
+    }
+}
+
+loom {
+    mixin {
+        getDefaultRefmapName().set("fabric.${modId}.refmap.json")
+    }
+
+    runs {
+        create("horseInfoReloadedClient") {
+            client()
+
+            property("fabric.log.level", "debug")
+            vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
+        }
+        create("horseInfoReloadedServer") {
+            server()
+
+            property("fabric.log.level", "debug")
+            vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
+        }
+    }
+}

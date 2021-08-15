@@ -1,4 +1,4 @@
-package net.ironingot.flightview;
+package net.ironingot.flightview.forge;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,15 +23,15 @@ import org.lwjgl.glfw.GLFW;
 import java.util.UUID;
 
 @Mod(FlightViewMod.modId)
-public class FlightViewMod
-{
+public class FlightViewMod {
     public static final Logger logger = LogManager.getLogger();
 
-    public static final String modId ="flightview";
-    public static final String buildId ="2019-6";
+    public static final String modId = "flightview";
+    public static final String buildId = "2019-6";
     public static String modVersion;
 
-    public static final KeyMapping KEYBINDING_MODE = new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category");
+    public static final KeyMapping KEYBINDING_MODE = new KeyMapping("flightview.keybinding.desc.toggle",
+            GLFW.GLFW_KEY_V, "flightview.keybinding.category");
 
     private static int mode = 0;
 
@@ -56,7 +56,7 @@ public class FlightViewMod
     public void onKeyInput(KeyInputEvent event) {
         if (KEYBINDING_MODE.isDown()) {
             toggle();
-            switch(mode) {
+            switch (mode) {
                 case 0:
                     message("FlightView is Deactivated.");
                     break;
@@ -70,31 +70,24 @@ public class FlightViewMod
         }
     }
 
-    public static void message(String s)
-    {
+    public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
         mc.player.sendMessage(
-            new TextComponent("")
-                .append(new TextComponent("[").withStyle(ChatFormatting.GRAY))
-                .append(new TextComponent("FlightView").withStyle(ChatFormatting.GREEN))
-                .append(new TextComponent("] ").withStyle(ChatFormatting.GRAY))
-                .append(new TextComponent(s)),
-            UUID.randomUUID()
-        );
+                new TextComponent("").append(new TextComponent("[").withStyle(ChatFormatting.GRAY))
+                        .append(new TextComponent("FlightView").withStyle(ChatFormatting.GREEN))
+                        .append(new TextComponent("] ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(s)),
+                UUID.randomUUID());
     }
 
-    public static boolean isActive()
-    {
+    public static boolean isActive() {
         return mode > 0;
     }
 
-    public static boolean isCameraChange()
-    {
+    public static boolean isCameraChange() {
         return mode == 2;
     }
 
-    public static void toggle()
-    {
+    public static void toggle() {
         mode += 1;
         mode %= 3;
     }

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${version}",
+  "name": "${modName}",
+  "description": "Show fight information",
+  
+  "authors": [
+    "fubira"
+  ],
+  "contact": {
+    "homepage": "https://github.com/fubira/FlightView/",
+    "issues": "https://github.com/fubira/FlightView/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.ironingot.horseinforeloaded.fabric.FlightViewMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "cloth-config2": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  }
+}

@@ -1,78 +1,48 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
-        jcenter()
     }
+}
+
+allprojects {
+    apply plugin: "java"
+
+    java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.compilerArgs = ["-Xlint:deprecation"]
+    }
+
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        implementation(libs.gson)
+        implementation(libs.log4japi)
+        implementation(libs.log4jcore)
     }
-}
 
-apply plugin: 'java'
-apply plugin: 'net.minecraftforge.gradle'
-
-def mc_version = "1.17.1"
-def forge_version = "37.0.27"
-def postfix_version = "b"
-
-version = "${mc_version}-${postfix_version}"
-group = "net.ironingot.flightview"
-archivesBaseName = "FlightView"
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-
-minecraft {
-    mappings channel: 'official', version: '1.17.1'
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                horseinfo {
-                    source sourceSets.main
-                }
-            }
+    repositories {
+        mavenCentral()
+        maven {
+            name = "Minecraft Libraries"
+            url = uri("https://libraries.minecraft.net")
         }
-        server {
-            workingDirectory file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                horseinfo {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
+        maven {
+            name = "Cloth Config"
+            url = "https://maven.shedaniel.me/"
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+group = "net.ironingot"
+archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
-dependencies {
-    minecraft 'net.minecraftforge:forge:' + mc_version + '-' + forge_version
-}
+task buildJar(type: Jar, group: "modding") {
+    dependsOn ":common:build", ":fabric:build", ":forge:build"
 
-def defaultEncoding = 'UTF-8'
-tasks.withType(AbstractCompile).each { it.options.encoding = defaultEncoding }
-
-jar {
-    archiveName = archivesBaseName + '-' + mc_version + '-' + postfix_version + '.jar'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from zipTree("common/build/libs/common-${project.version}.jar"),
+        zipTree("fabric/build/libs/fabric-${project.version}.jar")
+        zipTree("forge/build/libs/forge-${project.version}.jar")
 
     from('./') {
         include 'LICENSE.md'
@@ -80,15 +50,14 @@ jar {
 
     manifest {
         attributes([
-            'Specification-Title'  : 'FlightView',
-            'Specification-Vendor' : 'fubira',
-            'Specification-Version': '1',
-
-            'Implementation-Title'  : 'FlightView',
-            'Implementation-Vendor' : 'fubira',
-            'Implementation-Version': version,
-
-            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Specification-Title"     : project.modId,
+                "Specification-Vendor"    : project.vendor,
+                "Specification-Version"   : project.version,
+                "Implementation-Title"    : project.modName,
+                "Implementation-Version"  : project.version,
+                "Implementation-Vendor"   : project.vendor,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
+assemble.finalizedBy("buildJar")

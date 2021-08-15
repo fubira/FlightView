@@ -1,0 +1,33 @@
+modLoader = "javafml"
+loaderVersion = "[37,)" 
+
+author = "${author}"
+license = "Copyright (c) 2021 ${vendor}"
+
+issueTrackerURL = "https://github.com/fubira/FlightView/issues"
+
+[[mods]]
+modId = "${modId}"
+version = "${version}"
+displayName = "${modName}"
+displayURL = "https://github.com/fubira/FlightView/"
+credits = "${vendor}"
+author = "${author}"
+
+description = '''
+FlightView
+'''
+
+[[dependencies.flightview]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.17,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.flightview]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[37,)"
+    ordering = "NONE"
+    side = "BOTH"

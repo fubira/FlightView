@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        jcenter()
+        maven {
+            name = "Fabric"
+            url = uri("https://maven.fabricmc.net/")
+        }
+        gradlePluginPortal()
+    }
+
+    plugins {
+        id("fabric-loom").version("${loom_version}")
+    }
+}
+
+enableFeaturePreview("VERSION_CATALOGS")
+rootProject.name = "HorseInfoReloaded"
+
+include("common")
+include("fabric")
+include("forge")
