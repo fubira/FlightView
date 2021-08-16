@@ -15,10 +15,15 @@ public class WorldRenderLastEventListener {
     }
 
     public void onWorldRenderLast(Minecraft client) {
-        if (!FlightViewMod.isActive())
+        if (!FlightViewMod.isActive()) {
             return;
+        }
 
         LocalPlayer player = client.player;
+        if (player == null) {
+            return;
+        }
+
         if (!isLastFlying && player.isFallFlying()) {
             startElytraFlying();
             isLastFlying = true;

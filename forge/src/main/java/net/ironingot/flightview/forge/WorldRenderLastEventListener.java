@@ -22,10 +22,14 @@ public class WorldRenderLastEventListener {
     @SubscribeEvent
     public void onWorldRenderLast(RenderWorldLastEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        LocalPlayer player = mc.player;
 
         if (!FlightViewMod.isActive())
             return;
+
+        LocalPlayer player = mc.player;
+        if (player == null) {
+            return;
+        }
 
         if (!isLastFlying && player.isFallFlying()) {
             startElytraFlying();
