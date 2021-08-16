@@ -12,6 +12,7 @@ buildscript {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
 

@@ -6,11 +6,11 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 @Config(name = "flightview")
-public class FabricConfig implements ConfigData {
+public class FlightViewConfig implements ConfigData {
     public int mode = 0;
 
-	public static FabricConfig register(){
-		var configHolder = AutoConfig.register(FabricConfig.class, GsonConfigSerializer::new);
+	public static FlightViewConfig register(){
+		var configHolder = AutoConfig.register(FlightViewConfig.class, GsonConfigSerializer::new);
 
         return configHolder.getConfig();
 	}

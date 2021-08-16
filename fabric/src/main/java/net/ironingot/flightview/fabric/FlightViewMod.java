@@ -13,11 +13,11 @@ import org.lwjgl.glfw.GLFW;
 import java.util.UUID;
 
 public class FlightViewMod implements ClientModInitializer {
-    public static FabricConfig config;
+    public static FlightViewConfig config;
 
     @Override
     public void onInitializeClient() {
-        config = FabricConfig.register();
+        config = FlightViewConfig.register();
 
         KeyMapping KEYBINDING_MODE = KeyBindingHelper.registerKeyBinding(
                 new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category"));

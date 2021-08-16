@@ -9,6 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.ChatFormatting;
@@ -37,6 +38,8 @@ public class FlightViewMod {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, KeyInputEvent.class, this::onKeyInput);
 
+        FlightViewConfig.register(ModLoadingContext.get());
+
         modVersion = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
         FlightViewMod.logger.info("*** FlightView " + modVersion + " initialized ***");
     }
@@ -54,7 +57,7 @@ public class FlightViewMod {
     public void onKeyInput(KeyInputEvent event) {
         if (KEYBINDING_MODE.consumeClick()) {
             toggle();
-            showModStateMessage(ForgeConfig.mode.get());
+            showModStateMessage(FlightViewConfig.mode.get());
         }
     }
 
@@ -82,16 +85,16 @@ public class FlightViewMod {
     }
 
     public static boolean isActive() {
-        return ForgeConfig.mode.get() > 0;
+        return FlightViewConfig.mode.get() > 0;
     }
 
     public static boolean isCameraChange() {
-        return ForgeConfig.mode.get() == 2;
+        return FlightViewConfig.mode.get() == 2;
     }
 
     public static void toggle() {
-        int mode = (ForgeConfig.mode.get() + 1) % 3;
+        int mode = (FlightViewConfig.mode.get() + 1) % 3;
 
-        ForgeConfig.mode.set(mode);
+        FlightViewConfig.mode.set(mode);
     }
 }

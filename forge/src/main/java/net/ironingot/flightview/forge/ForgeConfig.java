@@ -1,25 +1,26 @@
 package net.ironingot.flightview.forge;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.fml.config.ModConfig;
+import java.util.function.Function;
 
-public class ForgeConfig {
-    public static final ForgeConfigSpec spec;
-    public static final IntValue mode;
+public class ForgeConfig
+{
+    private final ModConfig config;
 
-    public static void register(ModLoadingContext context) {
-        context.registerConfig(ModConfig.Type.COMMON, spec);
+    ForgeConfig(ModConfig config) {
+        this.config = config;
     }
 
-    static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-        builder.push("general");
+    public void save() {
+        config.save();
+    }
 
-        mode = builder.defineInRange("mode", 0, 0, 3);
+    public <T> void set(ConfigValue<T> property, T value) {
+        config.getConfigData().set(property.getPath(), value);
+    }
 
-        builder.pop();
-        spec = builder.build();
+    public <T> void update(ConfigValue<T> property, Function<T, T> func) {
+        set(property, func.apply(property.get()));
     }
 }
