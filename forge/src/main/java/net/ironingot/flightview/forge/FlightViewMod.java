@@ -9,7 +9,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.ChatFormatting;
@@ -64,13 +63,13 @@ public class FlightViewMod {
     public static void showModStateMessage(int mode) {
         switch (mode) {
             case 0:
-                message("disabled");
+                message("Disabled");
                 break;
             case 1:
-                message("information mode");
+                message("HUD mode");
                 break;
             case 2:
-                message("information + auto-camera mode");
+                message("HUD + AutoCamera mode");
                 break;
         }
     }
