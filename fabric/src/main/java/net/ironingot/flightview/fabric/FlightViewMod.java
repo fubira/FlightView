@@ -13,11 +13,11 @@ import org.lwjgl.glfw.GLFW;
 import java.util.UUID;
 
 public class FlightViewMod implements ClientModInitializer {
-    public static FlightViewConfig config;
+    public static FabricConfig config;
 
     @Override
     public void onInitializeClient() {
-        config = FlightViewConfig.register();
+        config = FabricConfig.register();
 
         KeyMapping KEYBINDING_MODE = KeyBindingHelper.registerKeyBinding(
                 new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category"));
@@ -58,14 +58,15 @@ public class FlightViewMod implements ClientModInitializer {
     }
 
     public static boolean isActive() {
-        return config.mode > 0;
+        return FlightViewMod.config.mode > 0;
     }
 
     public static boolean isCameraChange() {
-        return config.mode == 2;
+        return FlightViewMod.config.mode == 2;
     }
 
     public static void toggle() {
-        config.mode = (config.mode + 1) % 3;
+        FlightViewMod.config.mode = (config.mode + 1) % 3;
+        FlightViewMod.config.save();
     }
 }

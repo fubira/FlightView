@@ -5,7 +5,7 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
-public class FlightViewConfig {
+public class ForgeConfig {
     public static final ForgeConfigSpec spec;
     public static final IntValue mode;
 
