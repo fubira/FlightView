@@ -36,16 +36,17 @@ public class FlightViewMod implements ClientModInitializer {
     public static void showModStateMessage(int mode) {
         switch (mode) {
             case 0:
-                message("disabled");
+                message("Disabled");
                 break;
             case 1:
-                message("information mode");
+                message("HUD mode");
                 break;
             case 2:
-                message("information + auto-camera mode");
+                message("HUD + AutoCamera mode");
                 break;
         }
     }
+
 
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
