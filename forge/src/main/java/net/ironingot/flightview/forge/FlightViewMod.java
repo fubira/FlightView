@@ -33,8 +33,6 @@ public class FlightViewMod {
     public static final KeyMapping KEYBINDING_MODE = new KeyMapping("flightview.keybinding.desc.toggle",
             GLFW.GLFW_KEY_V, "flightview.keybinding.category");
 
-    private static int mode = 0;
-
     public FlightViewMod() {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, KeyInputEvent.class, this::onKeyInput);
@@ -54,19 +52,23 @@ public class FlightViewMod {
 
     @OnlyIn(Dist.CLIENT)
     public void onKeyInput(KeyInputEvent event) {
-        if (KEYBINDING_MODE.isDown()) {
+        if (KEYBINDING_MODE.consumeClick()) {
             toggle();
-            switch (mode) {
-                case 0:
-                    message("FlightView is Deactivated.");
-                    break;
-                case 1:
-                    message("FlightView is Activeated. (without Automatic Camera Change)");
-                    break;
-                case 2:
-                    message("FlightView is Activeated. (with Automatic Camera Change)");
-                    break;
-            }
+            showModStateMessage(ForgeConfig.mode.get());
+        }
+    }
+
+    public static void showModStateMessage(int mode) {
+        switch (mode) {
+            case 0:
+                message("disabled");
+                break;
+            case 1:
+                message("information mode");
+                break;
+            case 2:
+                message("information + auto-camera mode");
+                break;
         }
     }
 
@@ -80,15 +82,16 @@ public class FlightViewMod {
     }
 
     public static boolean isActive() {
-        return mode > 0;
+        return ForgeConfig.mode.get() > 0;
     }
 
     public static boolean isCameraChange() {
-        return mode == 2;
+        return ForgeConfig.mode.get() == 2;
     }
 
     public static void toggle() {
-        mode += 1;
-        mode %= 3;
+        int mode = (ForgeConfig.mode.get() + 1) % 3;
+
+        ForgeConfig.mode.set(mode);
     }
 }

@@ -1,29 +1,24 @@
 package net.ironingot.flightview.fabric;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class WorldRenderLastEventListener {
-    private static final Logger logger = LogManager.getLogger();
     private boolean isLastFlying = false;
     private CameraType lastCameraType = null;
     private boolean isCameraChanged = false;
 
     public WorldRenderLastEventListener() {
-        MinecraftForge.EVENT_BUS.register(this);
+        ClientTickEvents.END_CLIENT_TICK.register(this::onWorldRenderLast);
     }
 
-    public void onWorldRenderLast(RenderWorldLastEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        LocalPlayer player = mc.player;
-
+    public void onWorldRenderLast(Minecraft client) {
         if (!FlightViewMod.isActive())
             return;
 
+        LocalPlayer player = client.player;
         if (!isLastFlying && player.isFallFlying()) {
             startElytraFlying();
             isLastFlying = true;

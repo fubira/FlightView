@@ -3,6 +3,7 @@ package net.ironingot.flightview.fabric;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
@@ -17,25 +18,21 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.apache.logging.log4j.Logger;
-
-public class FlightViewRenderer {
-    private static final Logger logger = FlightViewMod.logger;
-
+public class FlightViewRenderer
+{
     public FlightViewRenderer() {
+        HudRenderCallback.EVENT.register(this::onHudRender);
     }
 
-    public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
+	public void onHudRender(PoseStack matrixStack, float tickDelta) {
         Minecraft mc = Minecraft.getInstance();
 
         if (!FlightViewMod.isActive())
             return;
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
-            LocalPlayer player = mc.player;
-            ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
-            renderFlightInfo(new PoseStack(), 8, 32, player, itemstack);
-        }
+        LocalPlayer player = mc.player;
+        ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
+        renderFlightInfo(matrixStack, 8, 32, player, itemstack);
     }
 
     protected List<String> getFlightInfoString(Player player) {

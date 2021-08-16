@@ -7,7 +7,7 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 @Config(name = "flightview")
 public class FabricConfig implements ConfigData {
-    public boolean enableMod = false;
+    public int mode = 0;
 
 	public static FabricConfig register(){
 		var configHolder = AutoConfig.register(FabricConfig.class, GsonConfigSerializer::new);

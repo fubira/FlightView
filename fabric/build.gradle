@@ -35,13 +35,13 @@ loom {
     }
 
     runs {
-        create("horseInfoReloadedClient") {
+        create("flightViewReloadedClient") {
             client()
 
             property("fabric.log.level", "debug")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
         }
-        create("horseInfoReloadedServer") {
+        create("flightViewReloadedServer") {
             server()
 
             property("fabric.log.level", "debug")

@@ -14,34 +14,37 @@ import java.util.UUID;
 
 public class FlightViewMod implements ClientModInitializer {
     public static FabricConfig config;
-    private static int mode = 0;
 
     @Override
     public void onInitializeClient() {
         config = FabricConfig.register();
 
         KeyMapping KEYBINDING_MODE = KeyBindingHelper.registerKeyBinding(
-                new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_H, "flightview.keybinding.category"));
+                new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (KEYBINDING_MODE.consumeClick()) {
                 toggle();
-                switch (mode) {
-                    case 0:
-                        message("FlightView is Deactivated.");
-                        break;
-                    case 1:
-                        message("FlightView is Activeated. (without Automatic Camera Change)");
-                        break;
-                    case 2:
-                        message("FlightView is Activeated. (with Automatic Camera Change)");
-                        break;
-                }
+                showModStateMessage(config.mode);
             }
         });
 
         new WorldRenderLastEventListener();
         new FlightViewRenderer();
+    }
+
+    public static void showModStateMessage(int mode) {
+        switch (mode) {
+            case 0:
+                message("disabled");
+                break;
+            case 1:
+                message("information mode");
+                break;
+            case 2:
+                message("information + auto-camera mode");
+                break;
+        }
     }
 
     public static void message(String s) {
@@ -54,15 +57,14 @@ public class FlightViewMod implements ClientModInitializer {
     }
 
     public static boolean isActive() {
-        return mode > 0;
+        return config.mode > 0;
     }
 
     public static boolean isCameraChange() {
-        return mode == 2;
+        return config.mode == 2;
     }
 
     public static void toggle() {
-        mode += 1;
-        mode %= 3;
+        config.mode = (config.mode + 1) % 3;
     }
 }

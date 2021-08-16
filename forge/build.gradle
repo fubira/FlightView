@@ -21,7 +21,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             mods {
-                horseinforeloaded {
+                flightview {
                     source sourceSets.main
                 }
             }
@@ -31,7 +31,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             mods {
-                horseinforeloaded {
+                flightview {
                     source sourceSets.main
                 }
             }
@@ -41,9 +41,9 @@ minecraft {
             workingDirectory project.file('../run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'horseinforeloaded', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'flightview', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
-                horseinforeloaded {
+                flightview {
                     source sourceSets.main
                 }
             }

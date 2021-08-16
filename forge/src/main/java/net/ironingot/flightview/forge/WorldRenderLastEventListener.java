@@ -9,11 +9,7 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class WorldRenderLastEventListener {
-    private static final Logger logger = LogManager.getLogger();
     private boolean isLastFlying = false;
     private CameraType lastCameraType = null;
     private boolean isCameraChanged = false;

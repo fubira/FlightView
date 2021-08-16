@@ -14,7 +14,7 @@ pluginManagement {
 }
 
 enableFeaturePreview("VERSION_CATALOGS")
-rootProject.name = "HorseInfoReloaded"
+rootProject.name = "FlightView"
 
 include("common")
 include("fabric")

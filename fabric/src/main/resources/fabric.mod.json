@@ -13,10 +13,10 @@
     "issues": "https://github.com/fubira/FlightView/issues"
   },
   "license": "MIT",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
-      "net.ironingot.horseinforeloaded.fabric.FlightViewMod"
+      "net.ironingot.flightview.fabric.FlightViewMod"
     ]
   },
   "depends": {
