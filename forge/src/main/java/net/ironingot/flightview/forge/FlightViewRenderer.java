@@ -70,11 +70,11 @@ public class FlightViewRenderer {
 
     protected int getElytraInfoColor(ItemStack stack) {
         int color = 0xffffff;
-        float left = stack.getDamageValue() / stack.getMaxDamage();
+        double left = (double)stack.getDamageValue() / stack.getMaxDamage();
         if (left > 0.95D)
-            color = 0xff0000;
+            color = 0xff4040;
         else if (left > 0.9D)
-            color = 0xff8000;
+            color = 0xff8040;
         return color;
     }
 
@@ -100,7 +100,7 @@ public class FlightViewRenderer {
 
         if (stack.getItem() == Items.ELYTRA) {
             mc.font.drawShadow(matrixStack, elytraInfoString, x + 20,
-                    y + flightInfoString.size() * lineHeight + lineHeight * 0.5f, 0xffffff, true);
+                    y + flightInfoString.size() * lineHeight + lineHeight * 0.5f, getElytraInfoColor(stack), true);
             drawElytraIcon(x, y + flightInfoString.size() * lineHeight, stack);
         }
 
