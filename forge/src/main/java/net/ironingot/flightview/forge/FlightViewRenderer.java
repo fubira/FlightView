@@ -61,7 +61,7 @@ public class FlightViewRenderer {
     }
 
     protected int getElytraLife(ItemStack stack) {
-        return stack.getMaxDamage() - stack.getDamageValue();
+        return stack.getMaxDamage() - stack.getDamageValue() - 1;
     }
 
     protected String getElytraInfoString(ItemStack stack) {
@@ -118,7 +118,8 @@ public class FlightViewRenderer {
                 GlStateManager.DestFactor.ZERO);
 
         itemRenderer.renderAndDecorateItem(stack, x, y);
-
+        itemRenderer.renderGuiItemDecorations(mc.font, stack, x, y);
+                
         mc.getProfiler().pop();
         RenderSystem.disableBlend();
     }
