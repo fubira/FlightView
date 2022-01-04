@@ -3,7 +3,7 @@ package net.ironingot.flightview.forge;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,7 @@ public class WorldRenderLastEventListener {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onWorldRenderLast(RenderWorldLastEvent event) {
+    public void onLevelRenderLast(RenderLevelLastEvent event) {
         Minecraft mc = Minecraft.getInstance();
 
         if (!FlightViewMod.isActive())
