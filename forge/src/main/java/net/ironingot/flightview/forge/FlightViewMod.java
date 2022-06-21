@@ -73,7 +73,6 @@ public class FlightViewMod {
 
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
-        // mc.player.sendMessage(
         mc.player.sendSystemMessage(
             Component.Serializer.fromJson("[\"\",{\"text\":\"[\",\"color\":\"gray\"},{\"text\":\"FlightView\",\"color\":\"dark_green\"},{\"text\":\"]\",\"color\":\"gray\"},{\"text\":\" " + s + "\"}]")
         );

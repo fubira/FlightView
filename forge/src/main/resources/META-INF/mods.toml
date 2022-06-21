@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[39,)" 
+loaderVersion = "[41,)" 
 
 author = "${author}"
 license = "Copyright (c) 2022 ${vendor}"
