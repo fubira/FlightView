@@ -11,16 +11,13 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.UUID;
 
 @Mod(FlightViewMod.modId)
 public class FlightViewMod {
@@ -76,11 +73,10 @@ public class FlightViewMod {
 
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
-        mc.player.sendMessage(
-                new TextComponent("").append(new TextComponent("[").withStyle(ChatFormatting.GRAY))
-                        .append(new TextComponent("FlightView").withStyle(ChatFormatting.GREEN))
-                        .append(new TextComponent("] ").withStyle(ChatFormatting.GRAY)).append(new TextComponent(s)),
-                UUID.randomUUID());
+        // mc.player.sendMessage(
+        mc.player.sendSystemMessage(
+            Component.Serializer.fromJson("[\"\",{\"text\":\"[\",\"color\":\"gray\"},{\"text\":\"FlightView\",\"color\":\"dark_green\"},{\"text\":\"]\",\"color\":\"gray\"},{\"text\":\" " + s + "\"}]")
+        );
     }
 
     public static boolean isActive() {

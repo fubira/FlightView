@@ -21,13 +21,13 @@ FlightView
 [[dependencies.flightview]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.18,)"
+    versionRange = "[1.19,)"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.flightview]]
     modId = "forge"
     mandatory = true
-    versionRange = "[39,)"
+    versionRange = "[41,)"
     ordering = "NONE"
     side = "BOTH"

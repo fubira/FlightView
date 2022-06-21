@@ -20,10 +20,10 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.12.0",
+    "fabricloader": ">=0.14.8",
     "fabric": "*",
     "cloth-config2": "*",
-    "minecraft": "1.18.x",
+    "minecraft": "1.19.x",
     "java": ">=17"
   }
 }
