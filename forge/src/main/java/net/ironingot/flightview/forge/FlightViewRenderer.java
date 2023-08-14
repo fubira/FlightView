@@ -91,7 +91,7 @@ public class FlightViewRenderer {
         height = flightInfoString.size() * lineHeight;
         height += lineHeight * 1.6;
 
-        drawContext.fill(RenderType.guiOverlay(), x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
+        // drawContext.fill(RenderType.guiOverlay(), x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
         for (int i = 0; i < flightInfoString.size(); i++) {
             drawContext.drawString(mc.font, flightInfoString.get(i), x, y + lineHeight * i, 0xffffff, true);
         }
