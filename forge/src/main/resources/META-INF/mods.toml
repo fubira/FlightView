@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[44,)" 
+loaderVersion = "[47,)" 
 
 author = "${author}"
 license = "Copyright (c) 2022 ${vendor}"
@@ -28,6 +28,6 @@ FlightView
 [[dependencies.flightview]]
     modId = "forge"
     mandatory = true
-    versionRange = "[44,)"
+    versionRange = "[47,)"
     ordering = "NONE"
     side = "BOTH"
