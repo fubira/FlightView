@@ -3,8 +3,8 @@ package net.ironingot.flightview.forge;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.InputEvent.Key;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;//.ClientRegistry;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -32,7 +32,7 @@ public class FlightViewMod {
 
     public FlightViewMod() {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, KeyInputEvent.class, this::onKeyInput);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, Key.class, this::onKeyInput);
 
         ForgeConfig.register(ModLoadingContext.get());
 
@@ -44,13 +44,16 @@ public class FlightViewMod {
     public void onClientSetup(FMLClientSetupEvent event) {
         new WorldRenderLastEventListener();
         new FlightViewRenderer();
-
-        ClientRegistry.registerKeyBinding(KEYBINDING_MODE);
         logger.info("[FlightView] Initialized.");
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void onKeyInput(KeyInputEvent event) {
+    public void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+        event.register(KEYBINDING_MODE);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void onKeyInput(Key event) {
         if (KEYBINDING_MODE.consumeClick()) {
             toggle();
             showModStateMessage(ForgeConfig.mode.get());
@@ -73,6 +76,7 @@ public class FlightViewMod {
 
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
+
         mc.player.sendSystemMessage(
             Component.Serializer.fromJson("[\"\",{\"text\":\"[\",\"color\":\"gray\"},{\"text\":\"FlightView\",\"color\":\"dark_green\"},{\"text\":\"]\",\"color\":\"gray\"},{\"text\":\" " + s + "\"}]")
         );

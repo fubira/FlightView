@@ -5,8 +5,9 @@ import java.util.List;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Items;
@@ -24,7 +25,7 @@ public class FlightViewRenderer
         HudRenderCallback.EVENT.register(this::onHudRender);
     }
 
-	public void onHudRender(PoseStack matrixStack, float tickDelta) {
+	public void onHudRender(GuiGraphics drawContext, float tickDelta) {
         Minecraft mc = Minecraft.getInstance();
 
         if (!FlightViewMod.isActive())
@@ -32,7 +33,7 @@ public class FlightViewRenderer
 
         LocalPlayer player = mc.player;
         ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
-        renderFlightInfo(matrixStack, 8, 32, player, itemstack);
+        renderFlightInfo(drawContext, 8, 32, player, itemstack);
     }
 
     protected List<String> getFlightInfoString(Player player) {
@@ -70,7 +71,7 @@ public class FlightViewRenderer
         return color;
     }
 
-    protected int renderFlightInfo(PoseStack matrixStack, int x, int y, Player player, ItemStack stack) {
+    protected int renderFlightInfo(GuiGraphics drawContext, int x, int y, Player player, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         List<String> flightInfoString = getFlightInfoString(player);
         String elytraInfoString = getElytraInfoString(stack);
@@ -85,23 +86,23 @@ public class FlightViewRenderer
         height = flightInfoString.size() * lineHeight;
         height += lineHeight * 1.6;
 
-        GuiComponent.fill(matrixStack, x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
+        drawContext.fill(RenderType.guiOverlay(), x - 2, y - 2, x + width + 2, y + height + 2, 0x60000000);
         for (int i = 0; i < flightInfoString.size(); i++) {
-            mc.font.drawShadow(matrixStack, flightInfoString.get(i), x, y + lineHeight * i, 0xffffff, true);
+            drawContext.drawString(mc.font, flightInfoString.get(i), x, y + lineHeight * i, 0xffffff, true);
         }
 
         if (stack.getItem() == Items.ELYTRA) {
-            mc.font.drawShadow(matrixStack, elytraInfoString, x + 20,
-                    y + flightInfoString.size() * lineHeight + lineHeight * 0.5f, getElytraInfoColor(stack), true);
-            drawElytraIcon(x, y + flightInfoString.size() * lineHeight, stack);
+            int px = x + 20;
+            int py = (int)(y + flightInfoString.size() * lineHeight + lineHeight * 0.5f);
+            drawContext.drawString(mc.font, elytraInfoString, px, py, getElytraInfoColor(stack), true);
+            drawElytraIcon(drawContext, x, y + flightInfoString.size() * lineHeight, stack);
         }
 
         return height;
     }
 
-    protected void drawElytraIcon(int x, int y, ItemStack stack) {
+    protected void drawElytraIcon(GuiGraphics drawContext, int x, int y, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
-        ItemRenderer itemRenderer = mc.getItemRenderer();
 
         mc.getProfiler().push("FlightView");
         RenderSystem.enableBlend();
@@ -109,9 +110,9 @@ public class FlightViewRenderer
                 GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
                 GlStateManager.DestFactor.ZERO);
 
-        itemRenderer.renderAndDecorateItem(stack, x, y);
-        itemRenderer.renderGuiItemDecorations(mc.font, stack, x, y);
-
+        drawContext.renderItem(stack, x, y);
+        drawContext.renderItemDecorations(mc.font, stack, x, y);
+        
         mc.getProfiler().pop();
         RenderSystem.disableBlend();
     }
