@@ -1,4 +1,4 @@
-package net.ironingot.flightview.forge;
+package net.ironingot.flightview.neoforge;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -97,5 +97,6 @@ public class FlightViewMod {
         int mode = (NeoForgeConfig.mode.get() + 1) % 3;
 
         NeoForgeConfig.mode.set(mode);
+        NeoForgeConfig.SPEC.save();
     }
 }

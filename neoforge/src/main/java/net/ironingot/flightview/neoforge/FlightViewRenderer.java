@@ -1,4 +1,4 @@
-package net.ironingot.flightview.forge;
+package net.ironingot.flightview.neoforge;
 
 import java.util.ArrayList;
 import java.util.List;

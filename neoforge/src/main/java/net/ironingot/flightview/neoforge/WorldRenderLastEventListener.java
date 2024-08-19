@@ -1,4 +1,4 @@
-package net.ironingot.flightview.forge;
+package net.ironingot.flightview.neoforge;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
