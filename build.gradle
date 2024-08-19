@@ -10,7 +10,7 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         options.compilerArgs = ["-Xlint:deprecation"]
-        options.release.set(17)
+        options.release.set(21)
     }
 
     dependencies {
@@ -32,16 +32,16 @@ allprojects {
     }
 }
 
-group = "net.ironingot"
-archivesBaseName = "${project.modName}-${project.minecraft_version}"
+group = mod_group_id
+archivesBaseName = "${project.mod_name}-${project.minecraft_version}"
 
 task buildJar(type: Jar, group: "modding") {
-    dependsOn ":common:build", ":fabric:build", ":forge:build"
+    dependsOn ":common:build", ":fabric:build", ":neoforge:build"
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from zipTree("common/build/libs/common-${project.version}.jar"),
         zipTree("fabric/build/libs/fabric-${project.version}.jar"),
-        zipTree("forge/build/libs/forge-${project.version}.jar")
+        zipTree("neoforge/build/libs/neoforge-${project.version}.jar")
 
     from('./') {
         include 'LICENSE.md'
@@ -49,10 +49,10 @@ task buildJar(type: Jar, group: "modding") {
 
     manifest {
         attributes([
-                "Specification-Title"     : project.modId,
+                "Specification-Title"     : project.mod_id,
                 "Specification-Vendor"    : project.vendor,
                 "Specification-Version"   : project.version,
-                "Implementation-Title"    : project.modName,
+                "Implementation-Title"    : project.mod_name,
                 "Implementation-Version"  : project.version,
                 "Implementation-Vendor"   : project.vendor,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")

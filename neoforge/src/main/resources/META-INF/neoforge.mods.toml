@@ -1,18 +1,17 @@
 modLoader = "javafml"
-loaderVersion = "[47,)" 
+loaderVersion = "${fml_loader_version_range}"
 
-author = "${author}"
-license = "Copyright (c) 2022 ${vendor}"
-
+author = "${authors}"
+license = "${license}, Copyright (c) ${vendor}"
 issueTrackerURL = "https://github.com/fubira/FlightView/issues"
 
 [[mods]]
-modId = "${modId}"
+modId = "${mod_id}"
 version = "${version}"
-displayName = "${modName}"
+displayName = "${mod_name}"
 displayURL = "https://github.com/fubira/FlightView/"
 credits = "${vendor}"
-author = "${author}"
+author = "${authors}"
 
 description = '''
 FlightView
@@ -21,13 +20,13 @@ FlightView
 [[dependencies.flightview]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.20,)"
+    versionRange="${minecraft_version_range}"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.flightview]]
-    modId = "forge"
+    modId = "neoforge"
     mandatory = true
-    versionRange = "[47,)"
+    versionRange="${neoforge_version_range}"
     ordering = "NONE"
     side = "BOTH"

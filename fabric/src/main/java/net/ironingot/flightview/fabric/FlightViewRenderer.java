@@ -6,9 +6,9 @@ import java.util.List;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,27 +17,24 @@ import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 public class FlightViewRenderer
 {
     public FlightViewRenderer() {
-        HudRenderCallback.EVENT.register(this::onHudRender);
-    }
+        HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
+            Minecraft mc = Minecraft.getInstance();
 
-	public void onHudRender(GuiGraphics drawContext, float tickDelta) {
-        Minecraft mc = Minecraft.getInstance();
-
-        if (!FlightViewMod.isActive())
-            return;
-
-        LocalPlayer player = mc.player;
-        ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
-        renderFlightInfo(drawContext, 8, 32, player, itemstack);
+            if (!FlightViewMod.isActive())
+                return;
+    
+            LocalPlayer player = mc.player;
+            ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
+            renderFlightInfo(drawContext, 8, 32, player, itemstack);
+        });
     }
 
     protected List<String> getFlightInfoString(Player player) {
-        List<String> stringArray = new ArrayList<String>();
+        List<String> stringArray = new ArrayList<>();
         double dx = player.position().x - player.xOld;
         double dy = player.position().y - player.yOld;
         double dz = player.position().z - player.zOld;

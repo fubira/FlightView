@@ -3,12 +3,6 @@ package net.ironingot.flightview.forge;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -19,18 +13,22 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 public class FlightViewRenderer {
     public FlightViewRenderer() {
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.addListener(this::onRenderGuiLayer);
     }
 
     @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onRenderGuiOverlay(RenderGuiOverlayEvent.Post event) {
+    public void onRenderGuiLayer(RenderGuiLayerEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
 
         if (!FlightViewMod.isActive())

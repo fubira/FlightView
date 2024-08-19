@@ -1,0 +1,50 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.gradle.userdev' version '7.0.145'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+dependencies {
+    implementation(libs.neoforge)
+    implementation project(":common")
+}
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
+
+    client {
+        workingDirectory project.file('run')
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+
+    server {
+        workingDirectory project.file('run')
+        programArgument '--nogui'
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+
+    gameTestServer {
+        workingDirectory project.file('run')
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    from "src/main/resources", "../common/src/main/resources"
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand project.properties
+    }
+}

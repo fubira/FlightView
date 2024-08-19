@@ -1,13 +1,13 @@
 package net.ironingot.flightview.forge;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 public class WorldRenderLastEventListener {
     private boolean isLastFlying = false;
@@ -15,11 +15,10 @@ public class WorldRenderLastEventListener {
     private boolean isCameraChanged = false;
 
     public WorldRenderLastEventListener() {
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.addListener(this::onLevelRenderStage);
     }
 
     @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
     public void onLevelRenderStage(RenderLevelStageEvent event) {
         Minecraft mc = Minecraft.getInstance();
 

@@ -1,13 +1,17 @@
+[plugins]
+neogradle-userdev = "net.neoforged.gradle.userdev:7.0.145"
+fabric-loom = "fabric-loom:1.7-SNAPSHOT"
+
 [libraries]
-minecraft = { group = "com.mojang", name = "minecraft", version = "1.20.1" }
-fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version = "0.14.22" }
-fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version = "0.87.0+1.20.1" }
-forge = { group = "net.minecraftforge", name = "forge", version = "1.20.1-47.1.0" }
-clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version = "11.1.106" }
-clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version = "11.1.106" }
+minecraft = { group = "com.mojang", name = "minecraft", version = "1.21.1" }
+fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version = "0.16.2" }
+fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version = "0.102.1+1.21.1" }
+neoforge = { group = "net.neoforged", name = "neoforge", version = "21.0.167" }
+clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version = "15.0.130" }
+clothConfigNeoForge = { group = "me.shedaniel.cloth", name = "cloth-config-neoforge", version = "15.0.130" }
 gson = { group = "com.google.code.gson", name = "gson", version = "2.10.1" }
-log4japi = { group = "org.apache.logging.log4j", name = "log4j-api", version = "2.20.0" }
-log4jcore = { group = "org.apache.logging.log4j", name = "log4j-core", version = "2.20.0" }
+log4japi = { group = "org.apache.logging.log4j", name = "log4j-api", version = "2.22.1" }
+log4jcore = { group = "org.apache.logging.log4j", name = "log4j-core", version = "2.22.1" }
 
 [bundles]
 fabric = ["fabric-loader", "fabric-api"]

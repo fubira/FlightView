@@ -2,6 +2,8 @@ plugins {
     id("fabric-loom") version("${loom_version}")
 }
 
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
 dependencies {
     minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
@@ -25,13 +27,13 @@ tasks {
 
     compileJava {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set(21)
     }
 }
 
 loom {
     mixin {
-        getDefaultRefmapName().set("fabric.${modId}.refmap.json")
+        getDefaultRefmapName().set("fabric.${mod_id}.refmap.json")
     }
 
     runs {
