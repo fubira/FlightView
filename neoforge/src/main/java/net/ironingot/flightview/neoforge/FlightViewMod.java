@@ -1,19 +1,21 @@
-package net.ironingot.flightview.forge;
+package net.ironingot.flightview.neoforge;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.client.event.InputEvent.Key;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;//.ClientRegistry;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.event.InputEvent.Key;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,17 +32,18 @@ public class FlightViewMod {
     public static final KeyMapping KEYBINDING_MODE = new KeyMapping("flightview.keybinding.desc.toggle",
             GLFW.GLFW_KEY_V, "flightview.keybinding.category");
 
-    public FlightViewMod() {
-        FMLJavaModLoadingContext.get().getModEventBus().register(this);
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, Key.class, this::onKeyInput);
+    public FlightViewMod(IEventBus modBus, ModContainer modContainer) {
+        modBus.addListener(this::onClientSetup);
+        modBus.addListener(this::onRegisterKeyMappings);
+        NeoForge.EVENT_BUS.addListener(this::onKeyInput);
 
-        ForgeConfig.register(ModLoadingContext.get());
+        modContainer.registerConfig(ModConfig.Type.CLIENT, NeoForgeConfig.SPEC);
 
         modVersion = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
         FlightViewMod.logger.info("*** FlightView " + modVersion + " initialized ***");
     }
 
-    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public void onClientSetup(FMLClientSetupEvent event) {
         new WorldRenderLastEventListener();
         new FlightViewRenderer();
@@ -56,7 +59,7 @@ public class FlightViewMod {
     public void onKeyInput(Key event) {
         if (KEYBINDING_MODE.consumeClick()) {
             toggle();
-            showModStateMessage(ForgeConfig.mode.get());
+            showModStateMessage(NeoForgeConfig.mode.get());
         }
     }
 
@@ -78,21 +81,22 @@ public class FlightViewMod {
         Minecraft mc = Minecraft.getInstance();
 
         mc.player.sendSystemMessage(
-            Component.Serializer.fromJson("[\"\",{\"text\":\"[\",\"color\":\"gray\"},{\"text\":\"FlightView\",\"color\":\"dark_green\"},{\"text\":\"]\",\"color\":\"gray\"},{\"text\":\" " + s + "\"}]")
+            Component.Serializer.fromJson("[\"\",{\"text\":\"[\",\"color\":\"gray\"},{\"text\":\"FlightView\",\"color\":\"dark_green\"},{\"text\":\"]\",\"color\":\"gray\"},{\"text\":\" " + s + "\"}]", mc.player.registryAccess())
         );
     }
 
     public static boolean isActive() {
-        return ForgeConfig.mode.get() > 0;
+        return NeoForgeConfig.mode.get() > 0;
     }
 
     public static boolean isCameraChange() {
-        return ForgeConfig.mode.get() == 2;
+        return NeoForgeConfig.mode.get() == 2;
     }
 
     public static void toggle() {
-        int mode = (ForgeConfig.mode.get() + 1) % 3;
+        int mode = (NeoForgeConfig.mode.get() + 1) % 3;
 
-        ForgeConfig.mode.set(mode);
+        NeoForgeConfig.mode.set(mode);
+        NeoForgeConfig.SPEC.save();
     }
 }
