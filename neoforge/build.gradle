@@ -62,6 +62,6 @@ processResources {
     from "src/main/resources", "../common/src/main/resources"
 
     filesMatching("META-INF/neoforge.mods.toml") {
-        expand(project: project)
+        expand(project.properties)
     }
 }

@@ -21,7 +21,7 @@ tasks {
         from("src/main/resources", "../common/src/main/resources")
 
         filesMatching("fabric.mod.json") {
-            expand(project: project)
+            expand(project.properties)
         }
     }
 
