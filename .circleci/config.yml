@@ -17,14 +17,12 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies-
 
-      - run: ./gradlew dependencies
+      - run: ./gradlew build
 
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-
-      - run: ./gradlew build
 
       - store_artifacts:
           path: build/libs
