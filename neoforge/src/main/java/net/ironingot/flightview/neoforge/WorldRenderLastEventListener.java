@@ -4,8 +4,7 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
@@ -15,11 +14,11 @@ public class WorldRenderLastEventListener {
     private boolean isCameraChanged = false;
 
     public WorldRenderLastEventListener() {
-        NeoForge.EVENT_BUS.addListener(this::onLevelRenderStage);
+        NeoForge.EVENT_BUS.addListener(this::onRenderLevelStage);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void onLevelRenderStage(RenderLevelStageEvent event) {
+    @SubscribeEvent
+    public void onRenderLevelStage(final RenderLevelStageEvent.AfterLevel event) {
         Minecraft mc = Minecraft.getInstance();
 
         if (!FlightViewMod.isActive())

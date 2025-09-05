@@ -6,11 +6,17 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 
 import org.lwjgl.glfw.GLFW;
 
 public class FlightViewMod implements ClientModInitializer {
     public static FabricConfig config;
+
+    public static Component modMessageHeader = Component.empty()
+        .append(Component.literal("[").withStyle(net.minecraft.ChatFormatting.GRAY))
+        .append(Component.literal("FlightView").withStyle(net.minecraft.ChatFormatting.DARK_GREEN))
+        .append(Component.literal("]").withStyle(net.minecraft.ChatFormatting.GRAY));
 
     @Override
     public void onInitializeClient() {
@@ -47,8 +53,10 @@ public class FlightViewMod implements ClientModInitializer {
 
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
-        mc.player.sendSystemMessage(
-            Component.Serializer.fromJson("[\"\",{\"text\":\"[\",\"color\":\"gray\"},{\"text\":\"FlightView\",\"color\":\"dark_green\"},{\"text\":\"]\",\"color\":\"gray\"},{\"text\":\" " + s + "\"}]", mc.player.registryAccess())
+
+        mc.gui.getChat().addMessage(Component.empty()
+            .append(modMessageHeader)
+            .append(Component.literal(" " + s))
         );
     }
 

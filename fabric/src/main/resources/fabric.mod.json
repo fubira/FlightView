@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
   "id": "${mod_id}",
-  "version": "${version}",
+  "version": "${mod_version}",
   "name": "${mod_name}",
-  "description": "${description}",
+  "description": "${mod_description}",
   
   "authors": [
-    "${authors}"
+    "${mod_authors}"
   ],
   "contact": {
     "homepage": "https://github.com/fubira/FlightView/",
     "issues": "https://github.com/fubira/FlightView/issues"
   },
-  "license": "MIT",
+  "license": "${mod_license}",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -20,10 +20,10 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.15.1",
+    "fabricloader": ">=0.17.2",
     "fabric": "*",
     "cloth-config2": "*",
-    "minecraft": "1.21.x",
+    "minecraft": "1.21.8",
     "java": ">=21"
   }
 }

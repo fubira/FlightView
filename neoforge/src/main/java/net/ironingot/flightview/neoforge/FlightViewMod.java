@@ -32,6 +32,11 @@ public class FlightViewMod {
     public static final KeyMapping KEYBINDING_MODE = new KeyMapping("flightview.keybinding.desc.toggle",
             GLFW.GLFW_KEY_V, "flightview.keybinding.category");
 
+    public static Component modMessageHeader = Component.empty()
+        .append(Component.literal("[").withStyle(net.minecraft.ChatFormatting.GRAY))
+        .append(Component.literal("FlightView").withStyle(net.minecraft.ChatFormatting.DARK_GREEN))
+        .append(Component.literal("]").withStyle(net.minecraft.ChatFormatting.GRAY));
+
     public FlightViewMod(IEventBus modBus, ModContainer modContainer) {
         modBus.addListener(this::onClientSetup);
         modBus.addListener(this::onRegisterKeyMappings);
@@ -80,8 +85,9 @@ public class FlightViewMod {
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
 
-        mc.player.sendSystemMessage(
-            Component.Serializer.fromJson("[\"\",{\"text\":\"[\",\"color\":\"gray\"},{\"text\":\"FlightView\",\"color\":\"dark_green\"},{\"text\":\"]\",\"color\":\"gray\"},{\"text\":\" " + s + "\"}]", mc.player.registryAccess())
+        mc.gui.getChat().addMessage(Component.empty()
+            .append(modMessageHeader)
+            .append(Component.literal(" " + s))
         );
     }
 

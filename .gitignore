@@ -1,6 +1,7 @@
 # Builds & binaries
 build/
 run/
+runs/
 bin/
 target/
 lib/
@@ -24,6 +25,7 @@ launcher/
 .pydevproject
 .idea/
 .vscode/
+*/.eclipse/
 *.iml
 
 # MCP Files
@@ -56,3 +58,6 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+
+# Claude Code
+.claude/
