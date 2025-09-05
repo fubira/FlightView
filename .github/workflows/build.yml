@@ -22,24 +22,25 @@ jobs:
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    
+
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
     - name: Build with Gradle
       run: ./gradlew build
       env:
         JVM_OPTS: -Xmx3200m
     
-    - name: Upload Fabric artifacts
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: fabric-artifacts
-        path: fabric/build/libs/*.jar
-        if-no-files-found: error
-    
-    - name: Upload NeoForge artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: neoforge-artifacts
-        path: neoforge/build/libs/*.jar
+        name: artifacts
+        path: build/libs
         if-no-files-found: error
     
     - name: Upload build reports
@@ -47,8 +48,5 @@ jobs:
       if: always()
       with:
         name: build-reports
-        path: |
-          build/reports
-          fabric/build/reports
-          neoforge/build/reports
+        path: build/reports
         if-no-files-found: ignore
