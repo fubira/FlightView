@@ -2,11 +2,11 @@ package net.ironingot.flightview.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.Identifier;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -22,8 +22,9 @@ public class FlightViewMod implements ClientModInitializer {
     public void onInitializeClient() {
         config = FabricConfig.register();
 
-        KeyMapping KEYBINDING_MODE = KeyBindingHelper.registerKeyBinding(
-                new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, "flightview.keybinding.category"));
+        KeyMapping.Category category = new KeyMapping.Category(Identifier.fromNamespaceAndPath("flightview", "keybinding"));
+        KeyMapping KEYBINDING_MODE = KeyMappingHelper.registerKeyMapping(
+                new KeyMapping("flightview.keybinding.desc.toggle", GLFW.GLFW_KEY_V, category));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (KEYBINDING_MODE.consumeClick()) {
@@ -54,7 +55,7 @@ public class FlightViewMod implements ClientModInitializer {
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
 
-        mc.gui.getChat().addMessage(Component.empty()
+        mc.gui.getChat().addClientSystemMessage(Component.empty()
             .append(modMessageHeader)
             .append(Component.literal(" " + s))
         );

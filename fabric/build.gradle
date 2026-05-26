@@ -1,15 +1,16 @@
 plugins {
-    id("fabric-loom") version("${loom_version}")
+    id("net.fabricmc.fabric-loom") version("${loom_version}")
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+def resourceProperties = new HashMap<String, Object>(project.properties)
 
 dependencies {
     minecraft(libs.minecraft)
-    mappings(loom.officialMojangMappings())
 
-    modImplementation(libs.bundles.fabric)
-    modImplementation(libs.clothConfigFabric)
+    implementation(libs.bundles.fabric)
+    implementation(libs.clothConfigFabric)
 
     implementation(project(":common"))
 }
@@ -21,21 +22,17 @@ tasks {
         from("src/main/resources", "../common/src/main/resources")
 
         filesMatching("fabric.mod.json") {
-            expand(project.properties)
+            expand(resourceProperties)
         }
     }
 
     compileJava {
         options.encoding = "UTF-8"
-        options.release.set(21)
+        options.release.set(25)
     }
 }
 
 loom {
-    mixin {
-        getDefaultRefmapName().set("fabric.${mod_id}.refmap.json")
-    }
-
     runs {
         create("flightViewClient") {
             client()

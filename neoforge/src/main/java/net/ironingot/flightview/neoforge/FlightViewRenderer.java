@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.ARGB;
@@ -17,8 +17,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 
 public class FlightViewRenderer {
     public FlightViewRenderer() {
@@ -33,8 +31,11 @@ public class FlightViewRenderer {
             return;
 
         LocalPlayer player = mc.player;
+        if (player == null)
+            return;
+
         ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
-        renderFlightInfo(event.getGuiGraphics(), new PoseStack(), 8, 32, player, itemstack);
+        renderFlightInfo(event.getGuiGraphics(), 8, 32, player, itemstack);
     }
 
     protected List<String> getFlightInfoString(Player player) {
@@ -72,7 +73,7 @@ public class FlightViewRenderer {
         return color;
     }
 
-    protected int renderFlightInfo(GuiGraphics drawContext, PoseStack matrixStack, int x, int y, Player player, ItemStack stack) {
+    protected int renderFlightInfo(GuiGraphicsExtractor drawContext, int x, int y, Player player, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         List<String> flightInfoString = getFlightInfoString(player);
         String elytraInfoString = getElytraInfoString(stack);
@@ -86,12 +87,12 @@ public class FlightViewRenderer {
         drawContext.pose().pushMatrix();
         drawContext.fill(x - 2, y - 2, x + areaWidth + 2, y + areaHeight + 2, backgroundColor);
 
-        flightInfoString.forEach(s -> drawContext.drawString(mc.font, s, x, y + lineHeight * flightInfoString.indexOf(s), ARGB.color(224, 224, 224), false));
+        flightInfoString.forEach(s -> drawContext.text(mc.font, s, x, y + lineHeight * flightInfoString.indexOf(s), ARGB.color(224, 224, 224), false));
 
         if (hasElytra) {
             int px = x + 20;
             int py = (int)(y + flightInfoString.size() * lineHeight + lineHeight * 0.5f);
-            drawContext.drawString(mc.font, elytraInfoString, px, py, getElytraInfoColor(stack), false);
+            drawContext.text(mc.font, elytraInfoString, px, py, getElytraInfoColor(stack), false);
             drawElytraIcon(drawContext, x, y + flightInfoString.size() * lineHeight, stack);
         }
 
@@ -100,10 +101,10 @@ public class FlightViewRenderer {
         return areaHeight;
     }
 
-    protected void drawElytraIcon(GuiGraphics drawContext, int x, int y, ItemStack stack) {
+    protected void drawElytraIcon(GuiGraphicsExtractor drawContext, int x, int y, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
 
-        drawContext.renderItem(stack, x, y);
-        drawContext.renderItemDecorations(mc.font, stack, x, y);
+        drawContext.item(stack, x, y);
+        drawContext.itemDecorations(mc.font, stack, x, y);
     }
 }

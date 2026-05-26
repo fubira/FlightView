@@ -3,6 +3,7 @@ package net.ironingot.flightview.neoforge;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -29,8 +30,10 @@ public class FlightViewMod {
     public static final String buildId = "2019-6";
     public static String modVersion;
 
+    public static final KeyMapping.Category KEYBINDING_CATEGORY = new KeyMapping.Category(
+            Identifier.fromNamespaceAndPath(modId, "keybinding"));
     public static final KeyMapping KEYBINDING_MODE = new KeyMapping("flightview.keybinding.desc.toggle",
-            GLFW.GLFW_KEY_V, "flightview.keybinding.category");
+            GLFW.GLFW_KEY_V, KEYBINDING_CATEGORY);
 
     public static Component modMessageHeader = Component.empty()
         .append(Component.literal("[").withStyle(net.minecraft.ChatFormatting.GRAY))
@@ -85,7 +88,7 @@ public class FlightViewMod {
     public static void message(String s) {
         Minecraft mc = Minecraft.getInstance();
 
-        mc.gui.getChat().addMessage(Component.empty()
+        mc.gui.getChat().addClientSystemMessage(Component.empty()
             .append(modMessageHeader)
             .append(Component.literal(" " + s))
         );

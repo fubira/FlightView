@@ -3,7 +3,9 @@ plugins {
     id 'net.neoforged.moddev' version "${moddev_version}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+def resourceProperties = new HashMap<String, Object>(project.properties)
 
 dependencies {
     implementation(libs.neoforge)
@@ -12,11 +14,6 @@ dependencies {
 
 neoForge {
     version = neo_version
-
-    parchment {
-        mappingsVersion = parchment_mappings_version
-        minecraftVersion = parchment_minecraft_version
-    }
 
     runs {
         client {
@@ -62,6 +59,6 @@ processResources {
     from "src/main/resources", "../common/src/main/resources"
 
     filesMatching("META-INF/neoforge.mods.toml") {
-        expand(project.properties)
+        expand(resourceProperties)
     }
 }
