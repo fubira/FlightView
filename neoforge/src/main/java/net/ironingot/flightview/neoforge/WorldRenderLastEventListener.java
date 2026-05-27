@@ -9,6 +9,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 public class WorldRenderLastEventListener {
+    // 飛行開始からこの tick 数を超えたら自動でカメラを切り替える
+    private static final long CAMERA_SWITCH_DELAY_TICKS = 15;
+
     private boolean isLastFlying = false;
     private CameraType lastCameraType = null;
     private boolean isCameraChanged = false;
@@ -62,7 +65,7 @@ public class WorldRenderLastEventListener {
     public void updateElytraFlying(long ticks) {
         Minecraft mc = Minecraft.getInstance();
 
-        if (!isCameraChanged && ticks > 15) {
+        if (!isCameraChanged && ticks > CAMERA_SWITCH_DELAY_TICKS) {
             if (FlightViewMod.isCameraChange()) {
                 mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);
             }
