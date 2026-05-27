@@ -56,8 +56,8 @@ public class FlightViewRenderer {
         renderFlightInfo(event.getGuiGraphics(), HUD_X, HUD_Y, player, itemstack);
     }
 
-    protected List<String> getFlightInfoString(Player player) {
-        List<String> stringArray = new ArrayList<String>();
+    protected List<String> getFlightInfoLines(Player player) {
+        List<String> lines = new ArrayList<>();
         double dx = player.position().x - player.xOld;
         double dy = player.position().y - player.yOld;
         double dz = player.position().z - player.zOld;
@@ -66,11 +66,11 @@ public class FlightViewRenderer {
         float yaw = Mth.wrapDegrees(player.getYRot());
         float pitch = Mth.wrapDegrees(player.getXRot());
 
-        stringArray.add(String.format("GS: %.2f(km/h)", groundSpeed * BLOCKS_PER_TICK_TO_KMH));
-        stringArray.add(String.format("AS: %.2f(km/h)", airSpeed * BLOCKS_PER_TICK_TO_KMH));
-        stringArray.add(String.format("Y: %.1f P: %.1f", yaw, pitch));
+        lines.add(String.format("GS: %.2f(km/h)", groundSpeed * BLOCKS_PER_TICK_TO_KMH));
+        lines.add(String.format("AS: %.2f(km/h)", airSpeed * BLOCKS_PER_TICK_TO_KMH));
+        lines.add(String.format("Y: %.1f P: %.1f", yaw, pitch));
 
-        return stringArray;
+        return lines;
     }
 
     protected int getElytraLife(ItemStack stack) {
@@ -93,26 +93,26 @@ public class FlightViewRenderer {
 
     protected int renderFlightInfo(GuiGraphicsExtractor drawContext, int x, int y, Player player, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
-        List<String> flightInfoString = getFlightInfoString(player);
+        List<String> flightInfoLines = getFlightInfoLines(player);
         String elytraInfoString = getElytraInfoString(stack);
 
         int backgroundColor = mc.options.getBackgroundColor(BACKGROUND_OPACITY);
         final boolean hasElytra = stack.getItem() == Items.ELYTRA;
-        final int areaWidth = flightInfoString.stream().mapToInt(mc.font::width).max().orElse(0);
-        final int areaHeight = LINE_HEIGHT * flightInfoString.size() + (hasElytra ? (int)(LINE_HEIGHT * 1.5) : 0);
+        final int areaWidth = flightInfoLines.stream().mapToInt(mc.font::width).max().orElse(0);
+        final int areaHeight = LINE_HEIGHT * flightInfoLines.size() + (hasElytra ? (int)(LINE_HEIGHT * 1.5) : 0);
 
         drawContext.pose().pushMatrix();
         drawContext.fill(x - BACKGROUND_PADDING, y - BACKGROUND_PADDING, x + areaWidth + BACKGROUND_PADDING, y + areaHeight + BACKGROUND_PADDING, backgroundColor);
 
-        for (int i = 0; i < flightInfoString.size(); i++) {
-            drawContext.text(mc.font, flightInfoString.get(i), x, y + LINE_HEIGHT * i, COLOR_TEXT, false);
+        for (int i = 0; i < flightInfoLines.size(); i++) {
+            drawContext.text(mc.font, flightInfoLines.get(i), x, y + LINE_HEIGHT * i, COLOR_TEXT, false);
         }
 
         if (hasElytra) {
             int px = x + ELYTRA_INFO_X_OFFSET;
-            int py = (int)(y + flightInfoString.size() * LINE_HEIGHT + LINE_HEIGHT * 0.5f);
+            int py = (int)(y + flightInfoLines.size() * LINE_HEIGHT + LINE_HEIGHT * 0.5f);
             drawContext.text(mc.font, elytraInfoString, px, py, getElytraInfoColor(stack), false);
-            drawElytraIcon(drawContext, x, y + flightInfoString.size() * LINE_HEIGHT, stack);
+            drawElytraIcon(drawContext, x, y + flightInfoLines.size() * LINE_HEIGHT, stack);
         }
 
         drawContext.pose().popMatrix();
