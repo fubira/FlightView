@@ -33,7 +33,7 @@ public class FlightViewMod implements ClientModInitializer {
             }
         });
 
-        new WorldRenderLastEventListener();
+        new ElytraFlightTracker();
         new FlightViewRenderer();
     }
 

@@ -1,11 +1,14 @@
-package net.ironingot.flightview.fabric;
+package net.ironingot.flightview.neoforge;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
-public class WorldRenderLastEventListener {
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+
+public class ElytraFlightTracker {
     // 飛行開始からこの tick 数を超えたら自動でカメラを切り替える
     private static final long CAMERA_SWITCH_DELAY_TICKS = 15;
 
@@ -13,16 +16,18 @@ public class WorldRenderLastEventListener {
     private CameraType lastCameraType = null;
     private boolean isCameraChanged = false;
 
-    public WorldRenderLastEventListener() {
-        ClientTickEvents.END_CLIENT_TICK.register(this::onWorldRenderLast);
+    public ElytraFlightTracker() {
+        NeoForge.EVENT_BUS.addListener(this::onRenderLevelStage);
     }
 
-    public void onWorldRenderLast(Minecraft client) {
-        if (!FlightViewMod.isActive()) {
-            return;
-        }
+    @SubscribeEvent
+    public void onRenderLevelStage(final RenderLevelStageEvent.AfterLevel event) {
+        Minecraft mc = Minecraft.getInstance();
 
-        LocalPlayer player = client.player;
+        if (!FlightViewMod.isActive())
+            return;
+
+        LocalPlayer player = mc.player;
         if (player == null) {
             return;
         }

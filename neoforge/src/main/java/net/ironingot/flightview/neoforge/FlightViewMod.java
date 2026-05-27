@@ -52,7 +52,7 @@ public class FlightViewMod {
 
     @OnlyIn(Dist.CLIENT)
     public void onClientSetup(FMLClientSetupEvent event) {
-        new WorldRenderLastEventListener();
+        new ElytraFlightTracker();
         new FlightViewRenderer();
         logger.info("[FlightView] Initialized.");
     }
