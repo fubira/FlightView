@@ -27,7 +27,6 @@ public class FlightViewMod {
     public static final Logger logger = LogManager.getLogger();
 
     public static final String modId = "flightview";
-    public static final String buildId = "2019-6";
     public static String modVersion;
 
     public static final KeyMapping.Category KEYBINDING_CATEGORY = new KeyMapping.Category(
@@ -53,7 +52,7 @@ public class FlightViewMod {
 
     @OnlyIn(Dist.CLIENT)
     public void onClientSetup(FMLClientSetupEvent event) {
-        new WorldRenderLastEventListener();
+        new ElytraFlightTracker();
         new FlightViewRenderer();
         logger.info("[FlightView] Initialized.");
     }
