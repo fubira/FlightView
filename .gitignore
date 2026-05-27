@@ -37,8 +37,6 @@ logs/
 runtime/
 temp/
 reobf/
-CHANGELOG
-LICENSE.txt
 *.sh
 
 # Misc
